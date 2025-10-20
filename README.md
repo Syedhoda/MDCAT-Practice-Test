@@ -1,1 +1,1347 @@
-# MDCAT-Practice-Test
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Knowledge Test</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding-top: 70px; /* Account for fixed header */
+            transition: padding-top 0.3s ease;
+        }
+        
+        body.header-collapsed {
+            padding-top: 50px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        header.collapsed {
+            padding: 5px 20px;
+        }
+        
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .toggle-header {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .toggle-header:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .timer-container {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .timer-label {
+            font-size: 0.8rem;
+            margin-bottom: 3px;
+            opacity: 0.9;
+        }
+        
+        #timer {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        
+        #reset-btn-header {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        #reset-btn-header:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .header-expanded {
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .header-expanded.collapsed {
+            max-height: 0;
+        }
+        
+        .section-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .nav-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .nav-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .nav-btn.active {
+            background-color: white;
+            color: #2575fc;
+        }
+        
+        .instructions {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .instructions h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        .section {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+        }
+        
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        
+        .question:hover {
+            background-color: #edf2f7;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        .option {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option:hover {
+            background-color: #e3f2fd;
+            border-color: #2196f3;
+        }
+        
+        .option.selected {
+            background-color: #bbdefb;
+            border-color: #2196f3;
+            font-weight: bold;
+        }
+        
+        .option.correct {
+            background-color: #c8e6c9;
+            border-color: #4caf50;
+        }
+        
+        .option.incorrect {
+            background-color: #ffcdd2;
+            border-color: #f44336;
+        }
+        
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background-color: #ffebee;
+            color: #c62828;
+            display: block;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        #submit-btn {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        #submit-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        #reset-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        #reset-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        .results {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        
+        .results h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+        
+        .score-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .score-card {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .score-card h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .score-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .total-score {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+        
+        .total-score h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        #total-score-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .answer-key {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+        
+        .answer-key h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .answer-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        
+        .answer-item {
+            padding: 8px 12px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .answer-item.correct {
+            background-color: #e8f5e9;
+        }
+        
+        .answer-item.incorrect {
+            background-color: #ffebee;
+        }
+        
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+            
+            body.header-collapsed {
+                padding-top: 40px;
+            }
+            
+            header {
+                padding: 8px 15px;
+            }
+            
+            header.collapsed {
+                padding: 4px 15px;
+            }
+            
+            .header-main {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .header-left, .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            h1 {
+                font-size: 1.3rem;
+            }
+            
+            .timer-container {
+                min-width: 100px;
+                padding: 6px 10px;
+            }
+            
+            .timer-label {
+                font-size: 0.7rem;
+            }
+            
+            #timer {
+                font-size: 1.1rem;
+            }
+            
+            .section-nav {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 5px;
+            }
+            
+            .nav-btn {
+                white-space: nowrap;
+                font-size: 0.8rem;
+                padding: 5px 10px;
+            }
+            
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            .answer-list {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .instructions, .section, .results {
+                padding: 15px;
+            }
+            
+            .question {
+                padding: 10px;
+            }
+            
+            .option {
+                padding: 10px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="main-header">
+        <div class="header-main">
+            <div class="header-left">
+                <button class="toggle-header" id="toggle-header">☰</button>
+                <h1>Knowledge Test</h1>
+            </div>
+            <div class="header-right">
+                <div class="timer-container">
+                    <div class="timer-label">Time Remaining</div>
+                    <div id="timer">03:00:00</div>
+                </div>
+                <button id="reset-btn-header">Reset Test</button>
+            </div>
+        </div>
+        <div class="header-expanded" id="header-expanded">
+            <div class="section-nav">
+                <button class="nav-btn active" data-section="instructions">📋 Instructions</button>
+                <button class="nav-btn" data-section="biology">🧬 Biology</button>
+                <button class="nav-btn" data-section="chemistry">⚗️ Chemistry</button>
+                <button class="nav-btn" data-section="physics">⚙️ Physics</button>
+                <button class="nav-btn" data-section="english">🗣️ English</button>
+                <button class="nav-btn" data-section="reasoning">🧩 Logical Reasoning</button>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="instructions section active" id="section-instructions">
+            <h2>Test Instructions</h2>
+            <ul>
+                <li>This test contains 180 questions divided into 5 sections.</li>
+                <li>You have 3 hours to complete the test.</li>
+                <li>Select your answer by clicking on the option.</li>
+                <li>You can change your answer anytime before submitting.</li>
+                <li>Use the navigation buttons in the header to switch between sections.</li>
+                <li>Click "Submit Test" when you're finished to see your results.</li>
+                <li>Use "Reset Test" to clear all your answers and start over.</li>
+                <li>You can collapse the header by clicking the ☰ button to have more screen space.</li>
+            </ul>
+        </div>
+        
+        <div id="test-container">
+            <!-- Sections will be dynamically inserted here -->
+        </div>
+        
+        <div class="controls">
+            <button id="reset-btn">Reset Test</button>
+            <button id="submit-btn">Submit Test</button>
+        </div>
+        
+        <div class="results" id="results-container">
+            <h2>Test Results</h2>
+            <div class="score-summary" id="score-summary">
+                <!-- Score cards will be dynamically inserted here -->
+            </div>
+            <div class="total-score">
+                <h3>Total Score</h3>
+                <div id="total-score-value">0/180</div>
+            </div>
+            <div class="answer-key" id="answer-key">
+                <!-- Answer key will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Answer key
+        const answerKey = {
+            // Biology (1-81)
+            1: 'C', 2: 'B', 3: 'C', 4: 'C', 5: 'C', 6: 'B', 7: 'B', 8: 'B', 9: 'B', 10: 'C',
+            11: 'A', 12: 'C', 13: 'B', 14: 'B', 15: 'A', 16: 'B', 17: 'B', 18: 'C', 19: 'C', 20: 'B',
+            21: 'A', 22: 'C', 23: 'C', 24: 'B', 25: 'B', 26: 'B', 27: 'B', 28: 'B', 29: 'B', 30: 'A',
+            31: 'B', 32: 'B', 33: 'B', 34: 'B', 35: 'C', 36: 'B', 37: 'B', 38: 'C', 39: 'A', 40: 'B',
+            41: 'B', 42: 'A', 43: 'D', 44: 'C', 45: 'B', 46: 'B', 47: 'A', 48: 'C', 49: 'B', 50: 'B',
+            51: 'C', 52: 'B', 53: 'B', 54: 'B', 55: 'B', 56: 'B', 57: 'C', 58: 'B', 59: 'B', 60: 'B',
+            61: 'A', 62: 'B', 63: 'A', 64: 'B', 65: 'B', 66: 'C', 67: 'B', 68: 'A', 69: 'B', 70: 'B',
+            71: 'B', 72: 'C', 73: 'C', 74: 'C', 75: 'B', 76: 'C', 77: 'B', 78: 'A', 79: 'B', 80: 'B', 81: 'B',
+            
+            // Chemistry (82-126)
+            82: 'A', 83: 'C', 84: 'B', 85: 'A', 86: 'B', 87: 'C', 88: 'B', 89: 'A', 90: 'C', 91: 'C',
+            92: 'B', 93: 'A', 94: 'B', 95: 'B', 96: 'B', 97: 'B', 98: 'C', 99: 'A', 100: 'B', 101: 'B',
+            102: 'C', 103: 'B', 104: 'B', 105: 'B', 106: 'A', 107: 'B', 108: 'B', 109: 'B', 110: 'B', 111: 'C',
+            112: 'C', 113: 'A', 114: 'B', 115: 'A', 116: 'B', 117: 'A', 118: 'A', 119: 'B', 120: 'B', 121: 'B',
+            122: 'A', 123: 'A', 124: 'B', 125: 'B', 126: 'B',
+            
+            // Physics (127-162)
+            127: 'B', 128: 'B', 129: 'B', 130: 'C', 131: 'D', 132: 'B', 133: 'C', 134: 'A', 135: 'B', 136: 'A',
+            137: 'C', 138: 'B', 139: 'B', 140: 'D', 141: 'B', 142: 'B', 143: 'B', 144: 'B', 145: 'B', 146: 'A',
+            147: 'B', 148: 'B', 149: 'B', 150: 'B', 151: 'C', 152: 'B', 153: 'A', 154: 'B', 155: 'B', 156: 'A',
+            157: 'B', 158: 'B', 159: 'B', 160: 'A', 161: 'B', 162: 'A',
+            
+            // English (163-171)
+            163: 'B', 164: 'C', 165: 'C', 166: 'B', 167: 'B', 168: 'B', 169: 'B', 170: 'D', 171: 'B',
+            
+            // Logical Reasoning (172-180)
+            172: 'C', 173: 'C', 174: 'A', 175: 'C', 176: 'B', 177: 'C', 178: 'D', 179: 'A', 180: 'C'
+        };
+
+        // Test data
+        const testData = [
+            {
+                id: "biology",
+                title: "🧬 BIOLOGY",
+                questions: [
+                    "Which of the following is not a viral disease?",
+                    "The double-helical model of DNA was proposed by:",
+                    "The main component of the bacterial cell wall is:",
+                    "Which of the following organelles is responsible for cellular respiration?",
+                    "The bond between two amino acids in a protein is called a:",
+                    "Which of the following is not a property of water important for life?",
+                    "The organelle responsible for packaging and secretion of proteins is:",
+                    "In RNA, thymine is replaced by:",
+                    "The term 'gene' is best defined as:",
+                    "The prokaryotic cell lacks:",
+                    "The site of protein synthesis is:",
+                    "Which of the following is the structural carbohydrate in plant cell walls?",
+                    "The main function of the smooth endoplasmic reticulum is:",
+                    "In human respiration, gas exchange occurs in:",
+                    "The functional unit of the kidney is called:",
+                    "Which part of the brain controls balance and coordination?",
+                    "Which of the following best describes the function of mitochondria?",
+                    "During muscle contraction, which ion plays a central role?",
+                    "The basic structural and functional unit of life is:",
+                    "The enzyme that unwinds DNA during replication is:",
+                    "Crossing over occurs during which phase of meiosis?",
+                    "The genetic disorder hemophilia is:",
+                    "In which process is oxygen the final electron acceptor?",
+                    "Which of the following diseases is caused by a retrovirus?",
+                    "The connective tissue connecting muscles to bones is called:",
+                    "The largest component of human blood is:",
+                    "Which chamber of the heart receives deoxygenated blood from the body?",
+                    "The functional role of the lymphatic system includes:",
+                    "The enzyme pepsin acts on:",
+                    "The process of maintaining a constant internal environment is called:",
+                    "Which of the following describes osmoregulation in humans?",
+                    "The theory of natural selection was proposed by:",
+                    "Which of the following hormones controls the menstrual cycle?",
+                    "The part of the male reproductive system that stores sperm is:",
+                    "The process of forming mRNA from DNA is called:",
+                    "Which of the following is a function of the Golgi apparatus?",
+                    "The process of breakdown of glucose in absence of oxygen is called:",
+                    "Which of the following provides immunity after vaccination?",
+                    "The main structural protein in connective tissues is:",
+                    "Which of the following diseases is transmitted sexually?",
+                    "Which of the following occurs in the mitochondria?",
+                    "The energy currency of the cell is:",
+                    "Which of the following represents a polysaccharide?",
+                    "The process by which white blood cells engulf foreign particles is known as:",
+                    "The enzyme amylase converts starch into:",
+                    "Which organ controls body temperature in humans?",
+                    "The largest part of the human brain is:",
+                    "The reflex arc involves which of the following components?",
+                    "The term 'arthritis' refers to inflammation of:",
+                    "Which of the following is responsible for color vision?",
+                    "Which of the following is not a component of the central nervous system?",
+                    "The pacemaker of the human heart is:",
+                    "Which of the following organs secretes bile?",
+                    "The primary site of nutrient absorption in humans is:",
+                    "Which of the following substances is excreted mainly through lungs?",
+                    "The filtrate formed in the Bowman's capsule is called:",
+                    "The major nitrogenous waste in human urine is:",
+                    "Which of the following best defines excretion?",
+                    "Which organ of the excretory system acts in osmoregulation?",
+                    "The process of water reabsorption from the nephron takes place mainly in:",
+                    "Kidney stones are primarily composed of:",
+                    "The main role of ADH hormone is to:",
+                    "Which of the following is caused by deficiency of insulin?",
+                    "The thyroid gland requires which element for hormone synthesis?",
+                    "Which of the following is an example of passive immunity?",
+                    "Which of the following describes active immunity?",
+                    "The first line of defense in the human body includes:",
+                    "The causative agent of AIDS is:",
+                    "Which of the following cells directly destroy pathogens?",
+                    "Which of the following explains the role of monoclonal antibodies?",
+                    "The movement of water from a region of low solute concentration to high solute concentration is called:",
+                    "Which pigment is essential for photosynthesis?",
+                    "In plant cells, turgor pressure is maintained by:",
+                    "The process by which green plants make their food is called:",
+                    "Which of the following is a sexually transmitted viral disease?",
+                    "In which part of the human body does fertilization normally occur?",
+                    "The corpus luteum secretes:",
+                    "During pregnancy, which hormone maintains the uterine lining?",
+                    "Which of the following statements is true about Lamarckism?",
+                    "According to Darwin's theory, evolution occurs through:",
+                    "Biotechnology helps in disease control by:"
+                ],
+                options: [
+                    ["A) AIDS", "B) Measles", "C) Tuberculosis", "D) Influenza"],
+                    ["A) Hershey and Chase", "B) Watson and Crick", "C) Franklin and Wilkins", "D) Avery and MacLeod"],
+                    ["A) Cellulose", "B) Chitin", "C) Peptidoglycan", "D) Glycogen"],
+                    ["A) Ribosome", "B) Golgi apparatus", "C) Mitochondria", "D) Lysosome"],
+                    ["A) Hydrogen bond", "B) Ionic bond", "C) Peptide bond", "D) Glycosidic bond"],
+                    ["A) High specific heat", "B) Nonpolar nature", "C) Cohesion", "D) Solvent ability"],
+                    ["A) Endoplasmic reticulum", "B) Golgi apparatus", "C) Ribosome", "D) Nucleolus"],
+                    ["A) Cytosine", "B) Uracil", "C) Adenine", "D) Guanine"],
+                    ["A) A sequence of amino acids", "B) A segment of DNA coding for a protein", "C) A chromosome part", "D) A ribosomal RNA"],
+                    ["A) Plasma membrane", "B) Cytoplasm", "C) Nucleus", "D) Ribosomes"],
+                    ["A) Ribosome", "B) Nucleus", "C) Golgi body", "D) Lysosome"],
+                    ["A) Starch", "B) Glycogen", "C) Cellulose", "D) Chitin"],
+                    ["A) Protein synthesis", "B) Lipid synthesis", "C) Ribosome production", "D) DNA replication"],
+                    ["A) Bronchi", "B) Alveoli", "C) Trachea", "D) Larynx"],
+                    ["A) Nephron", "B) Neuron", "C) Glomerulus", "D) Tubule"],
+                    ["A) Cerebrum", "B) Cerebellum", "C) Medulla", "D) Hypothalamus"],
+                    ["A) Protein synthesis", "B) ATP production", "C) Photosynthesis", "D) Lipid digestion"],
+                    ["A) Na⁺", "B) K⁺", "C) Ca²⁺", "D) Mg²⁺"],
+                    ["A) Tissue", "B) Organ", "C) Cell", "D) System"],
+                    ["A) Ligase", "B) Helicase", "C) Polymerase", "D) Topoisomerase"],
+                    ["A) Prophase I", "B) Metaphase I", "C) Anaphase II", "D) Telophase II"],
+                    ["A) Autosomal dominant", "B) Autosomal recessive", "C) X-linked recessive", "D) Y-linked"],
+                    ["A) Glycolysis", "B) Krebs cycle", "C) Electron transport chain", "D) Fermentation"],
+                    ["A) Dengue", "B) AIDS", "C) Influenza", "D) Polio"],
+                    ["A) Ligament", "B) Tendon", "C) Cartilage", "D) Areolar tissue"],
+                    ["A) RBCs", "B) Plasma", "C) WBCs", "D) Platelets"],
+                    ["A) Left atrium", "B) Right atrium", "C) Left ventricle", "D) Right ventricle"],
+                    ["A) Transporting gases", "B) Transporting lymph and immune defense", "C) Producing RBCs", "D) Digesting proteins"],
+                    ["A) Fats", "B) Proteins", "C) Carbohydrates", "D) Vitamins"],
+                    ["A) Homeostasis", "B) Osmosis", "C) Diffusion", "D) Metabolism"],
+                    ["A) Regulation of glucose", "B) Regulation of water and salts", "C) Regulation of oxygen", "D) Regulation of hormones"],
+                    ["A) Lamarck", "B) Darwin", "C) Wallace", "D) Mendel"],
+                    ["A) Testosterone", "B) Estrogen", "C) Thyroxine", "D) Insulin"],
+                    ["A) Testes", "B) Epididymis", "C) Vas deferens", "D) Seminal vesicle"],
+                    ["A) Replication", "B) Translation", "C) Transcription", "D) Mutation"],
+                    ["A) Energy production", "B) Modification and packaging of proteins", "C) Lipid synthesis", "D) Ribosome production"],
+                    ["A) Glycolysis", "B) Fermentation", "C) Photosynthesis", "D) Oxidation"],
+                    ["A) Red blood cells", "B) Platelets", "C) Antibodies", "D) Hormones"],
+                    ["A) Collagen", "B) Keratin", "C) Actin", "D) Elastin"],
+                    ["A) Cholera", "B) Syphilis", "C) Tuberculosis", "D) Malaria"],
+                    ["A) Glycolysis", "B) Krebs cycle", "C) Fermentation", "D) Photosynthesis"],
+                    ["A) ATP", "B) ADP", "C) NADH", "D) FADH₂"],
+                    ["A) Glucose", "B) Maltose", "C) Sucrose", "D) Glycogen"],
+                    ["A) Pinocytosis", "B) Exocytosis", "C) Phagocytosis", "D) Endocytosis"],
+                    ["A) Glucose", "B) Maltose", "C) Fructose", "D) Sucrose"],
+                    ["A) Pituitary gland", "B) Hypothalamus", "C) Medulla", "D) Cerebrum"],
+                    ["A) Cerebrum", "B) Cerebellum", "C) Medulla", "D) Pons"],
+                    ["A) Only sensory neuron", "B) Only motor neuron", "C) Sensory, relay, and motor neurons", "D) Only brain neurons"],
+                    ["A) Muscles", "B) Joints", "C) Cartilage", "D) Tendons"],
+                    ["A) Rod cells", "B) Cone cells", "C) Bipolar cells", "D) Ganglion cells"],
+                    ["A) Brain", "B) Spinal cord", "C) Peripheral nerves", "D) Cerebrum"],
+                    ["A) AV node", "B) SA node", "C) Bundle of His", "D) Purkinje fibers"],
+                    ["A) Stomach", "B) Liver", "C) Pancreas", "D) Gallbladder"],
+                    ["A) Stomach", "B) Small intestine", "C) Large intestine", "D) Rectum"],
+                    ["A) Urea", "B) CO₂", "C) Ammonia", "D) Bile pigments"],
+                    ["A) Urine", "B) Glomerular filtrate", "C) Plasma", "D) Lymph"],
+                    ["A) Ammonia", "B) Uric acid", "C) Urea", "D) Creatinine"],
+                    ["A) Removal of feces", "B) Removal of nitrogenous wastes", "C) Release of hormones", "D) Absorption of nutrients"],
+                    ["A) Liver", "B) Kidney", "C) Skin", "D) Lungs"],
+                    ["A) Bowman's capsule", "B) Loop of Henle", "C) Collecting duct", "D) Ureter"],
+                    ["A) Calcium oxalate", "B) Sodium chloride", "C) Potassium sulfate", "D) Glucose"],
+                    ["A) Regulate blood glucose", "B) Regulate urine volume", "C) Stimulate ovulation", "D) Increase heart rate"],
+                    ["A) Diabetes mellitus", "B) Goiter", "C) Scurvy", "D) Rickets"],
+                    ["A) Iron", "B) Iodine", "C) Calcium", "D) Sodium"],
+                    ["A) Vaccination", "B) Maternal antibodies", "C) Infection recovery", "D) Herd immunity"],
+                    ["A) Antibodies from mother", "B) Antibodies from serum", "C) Antibodies produced by the host", "D) Transfer through placenta"],
+                    ["A) Antibodies", "B) Skin and mucous membranes", "C) Lymphocytes", "D) T-cells"],
+                    ["A) HIV", "B) HBV", "C) HCV", "D) HPV"],
+                    ["A) Helper T-cells", "B) Killer T-cells", "C) B-cells", "D) Mast cells"],
+                    ["A) Vaccine production", "B) Disease diagnosis and treatment", "C) Antibiotic synthesis", "D) Hormone release"],
+                    ["A) Diffusion", "B) Osmosis", "C) Filtration", "D) Active transport"],
+                    ["A) Xanthophyll", "B) Carotene", "C) Chlorophyll", "D) Anthocyanin"],
+                    ["A) Nucleus", "B) Cytoplasm", "C) Vacuole", "D) Mitochondria"],
+                    ["A) Respiration", "B) Transpiration", "C) Photosynthesis", "D) Photolysis"],
+                    ["A) Syphilis", "B) AIDS", "C) Gonorrhea", "D) Trichomoniasis"],
+                    ["A) Uterus", "B) Ovary", "C) Fallopian tube", "D) Vagina"],
+                    ["A) Estrogen", "B) Progesterone", "C) FSH", "D) LH"],
+                    ["A) Progesterone", "B) Estrogen", "C) Oxytocin", "D) Prolactin"],
+                    ["A) It supports natural selection", "B) It explains inheritance of acquired characters", "C) It involves mutations", "D) It refutes evolution"],
+                    ["A) Inheritance of acquired traits", "B) Natural selection", "C) Genetic drift", "D) Artificial selection"],
+                    ["A) Producing antibiotics", "B) Producing vaccines and diagnostic kits", "C) Increasing mutations", "D) Gene deletion"]
+                ]
+            },
+            {
+                id: "chemistry",
+                title: "⚗️ CHEMISTRY",
+                questions: [
+                    "Which quantity represents the number of atoms in one mole of a substance?",
+                    "The limiting reagent is the one which:",
+                    "The theoretical yield is calculated from:",
+                    "The proton was discovered by:",
+                    "The shape of the p-orbital is:",
+                    "Which principle states that no two electrons can have the same set of quantum numbers?",
+                    "Which law relates volume and pressure at constant temperature?",
+                    "Standard temperature and pressure correspond to:",
+                    "For an ideal gas, PV = nRT represents:",
+                    "Hydrogen bonding is present in:",
+                    "The density of water is maximum at:",
+                    "The solid having long-range order is called:",
+                    "Lattice energy is the energy:",
+                    "A reaction that can proceed in both directions is called:",
+                    "According to Le Chatelier's principle, increasing pressure favors the reaction which:",
+                    "Common-ion effect is observed in:",
+                    "Buffer solution resists change in:",
+                    "The catalyst in the Haber process is:",
+                    "The rate of a reaction is expressed as:",
+                    "Activation energy is:",
+                    "The first law of thermodynamics states:",
+                    "Reaction which absorbs heat is:",
+                    "Hess's law deals with:",
+                    "Oxidation involves:",
+                    "The standard electrode potential of hydrogen is:",
+                    "VSEPR theory is used to predict:",
+                    "A σ-bond differs from a π-bond because:",
+                    "Water (H₂O) is polar because:",
+                    "Bond energy is directly proportional to:",
+                    "Elements in group I are called:",
+                    "Ionization energy generally:",
+                    "Reaction of sodium with water produces:",
+                    "D-block elements show variable:",
+                    "Organic chemistry deals with compounds of:",
+                    "Compounds with same molecular formula but different arrangement are:",
+                    "The general formula of alkanes is:",
+                    "The reaction of chlorine with methane in sunlight gives:",
+                    "The bond between carbon atoms in ethene is:",
+                    "Benzene shows mainly:",
+                    "The IUPAC name of acetylene is:",
+                    "Alkyl halides undergo:",
+                    "Alcohols on oxidation form:",
+                    "Phenol differs from ethanol because phenol:",
+                    "The functional group in aldehydes is:",
+                    "Proteins are polymers of:"
+                ],
+                options: [
+                    ["A) 6.022 × 10²³", "B) 3.011 × 10²³", "C) 1 × 10²³", "D) 12 × 10²³"],
+                    ["A) Is present in excess", "B) Stops the reaction", "C) Is completely consumed first", "D) Has lowest molar mass"],
+                    ["A) Experimental data", "B) Balanced chemical equation", "C) Molar volume", "D) Percent yield"],
+                    ["A) Goldstein", "B) Thomson", "C) Rutherford", "D) Dalton"],
+                    ["A) Spherical", "B) Dumbbell", "C) Linear", "D) Planar"],
+                    ["A) Aufbau", "B) Hund's", "C) Pauli exclusion", "D) Bohr's"],
+                    ["A) Charles'", "B) Boyle's", "C) Avogadro's", "D) Graham's"],
+                    ["A) 0 °C & 1 atm", "B) 25 °C & 1 atm", "C) 0 K & 1 atm", "D) 273 °C & 760 torr"],
+                    ["A) Avogadro's law", "B) Combined gas law", "C) Ideal gas equation", "D) Dalton's law"],
+                    ["A) CH₄", "B) H₂", "C) HF", "D) CO₂"],
+                    ["A) 0 °C", "B) 4 °C", "C) 10 °C", "D) 100 °C"],
+                    ["A) Crystalline", "B) Amorphous", "C) Polymeric", "D) Metallic glass"],
+                    ["A) Absorbed when lattice forms", "B) Released when ions combine", "C) Of covalent bonds", "D) Needed for fusion"],
+                    ["A) Irreversible", "B) Reversible", "C) Neutralization", "D) Spontaneous"],
+                    ["A) Produces more gas molecules", "B) Produces fewer gas molecules", "C) Is endothermic", "D) Has catalyst"],
+                    ["A) Strong acids", "B) Weak electrolytes", "C) Non-electrolytes", "D) Oxides"],
+                    ["A) Temperature", "B) Pressure", "C) pH", "D) Volume"],
+                    ["A) Fe", "B) Pt", "C) Ni", "D) Cu"],
+                    ["A) Change in pressure/time", "B) Change in concentration/time", "C) ΔT/ΔP", "D) Moles/time"],
+                    ["A) Energy released", "B) Energy required to start reaction", "C) Average kinetic energy", "D) Bond energy"],
+                    ["A) Entropy increases", "B) Energy can be created", "C) Energy is conserved", "D) Work = heat always"],
+                    ["A) Exothermic", "B) Endothermic", "C) Neutral", "D) Iso-thermal"],
+                    ["A) Reaction rate", "B) Path-independence of enthalpy", "C) Equilibrium constant", "D) Entropy change"],
+                    ["A) Gain of electrons", "B) Loss of electrons", "C) Gain of hydrogen", "D) Decrease in oxidation number"],
+                    ["A) 0 V", "B) 1 V", "C) −1 V", "D) 2 V"],
+                    ["A) Atomic mass", "B) Molecular shape", "C) Ionization energy", "D) Reaction rate"],
+                    ["A) σ is weaker", "B) σ is formed by end-to-end overlap", "C) π is single bond", "D) π allows rotation"],
+                    ["A) O–H bond non-polar", "B) Bent shape & ΔEN", "C) Linear molecule", "D) Symmetrical"],
+                    ["A) Bond length", "B) Bond strength", "C) Molecular size", "D) Electronegativity"],
+                    ["A) Alkaline earths", "B) Transition metals", "C) Alkali metals", "D) Halogens"],
+                    ["A) Increases down group", "B) Decreases across period", "C) Increases across period", "D) Constant"],
+                    ["A) NaOH + H₂", "B) NaCl + H₂O", "C) Na₂O", "D) Na₂CO₃"],
+                    ["A) Atomic number", "B) Valency", "C) Mass", "D) Periodicity"],
+                    ["A) Carbon", "B) Nitrogen", "C) Oxygen", "D) Hydrogen only"],
+                    ["A) Isotopes", "B) Isomers", "C) Allotropes", "D) Polymers"],
+                    ["A) CₙH₂ₙ₊₂", "B) CₙH₂ₙ", "C) CₙH₂ₙ₋₂", "D) CₙH₂ₙ₊₄"],
+                    ["A) CH₃Cl", "B) CH₄O", "C) C₂H₆", "D) C₂H₄"],
+                    ["A) Single", "B) Double (σ + π)", "C) Triple", "D) π-only"],
+                    ["A) Addition", "B) Substitution", "C) Elimination", "D) Hydration"],
+                    ["A) Ethene", "B) Ethyne", "C) Propene", "D) Propane"],
+                    ["A) Nucleophilic substitution", "B) Electrophilic addition", "C) Condensation", "D) Dehydration"],
+                    ["A) Acids or aldehydes", "B) Ethers", "C) Esters", "D) Halides"],
+                    ["A) Is non-acidic", "B) Shows electrophilic substitution", "C) Cannot hydrogen-bond", "D) Lacks hydroxyl group"],
+                    ["A) –CO–", "B) –CHO", "C) –COOH", "D) –OH"],
+                    ["A) Monosaccharides", "B) Amino acids", "C) Fatty acids", "D) Nucleotides"]
+                ]
+            },
+            {
+                id: "physics",
+                title: "⚙️ PHYSICS",
+                questions: [
+                    "The SI unit of force is:",
+                    "The slope of a displacement–time graph gives:",
+                    "Newton's third law deals with:",
+                    "The unit of momentum is:",
+                    "The quantity which has both magnitude and direction but not unit is:",
+                    "The area under a velocity–time graph represents:",
+                    "Work is said to be done when:",
+                    "Power is the rate of:",
+                    "A body moving in a circle experiences:",
+                    "The gravitational acceleration on Earth is approximately:",
+                    "According to Newton's law of gravitation, force is inversely proportional to:",
+                    "The SI unit of pressure is:",
+                    "Archimedes' principle states that:",
+                    "Pascal's law applies to:",
+                    "The hydraulic press works on:",
+                    "The temperature at which a pure substance changes from solid to liquid is called:",
+                    "The SI unit of heat is:",
+                    "Specific heat capacity is defined as the heat required to raise the temperature of:",
+                    "Thermal expansion occurs because:",
+                    "The first law of thermodynamics is based on:",
+                    "Entropy is a measure of:",
+                    "The device used to measure electric current is:",
+                    "The SI unit of electric charge is:",
+                    "Ohm's law states that:",
+                    "The resistance of a conductor depends on:",
+                    "The energy used by an electric device is given by:",
+                    "The magnetic field around a straight current-carrying conductor is:",
+                    "The right-hand rule gives the direction of:",
+                    "The unit of magnetic flux is:",
+                    "Electromagnetic induction was discovered by:",
+                    "A transformer works on the principle of:",
+                    "The speed of light in vacuum is approximately:",
+                    "Which color of light has the shortest wavelength?",
+                    "The refractive index is defined as:",
+                    "The focal length of a convex lens is:",
+                    "X-rays are produced when:"
+                ],
+                options: [
+                    ["A) Joule", "B) Newton", "C) Pascal", "D) Watt"],
+                    ["A) Acceleration", "B) Velocity", "C) Force", "D) Momentum"],
+                    ["A) Force and motion", "B) Action and reaction", "C) Energy and work", "D) Inertia"],
+                    ["A) N·s", "B) kg·m", "C) kg·m/s", "D) N/m"],
+                    ["A) Force", "B) Displacement", "C) Velocity", "D) Vector"],
+                    ["A) Acceleration", "B) Distance", "C) Momentum", "D) Force"],
+                    ["A) There is displacement", "B) Force is applied", "C) Force causes displacement", "D) Time changes"],
+                    ["A) Energy transfer", "B) Force", "C) Momentum", "D) Acceleration"],
+                    ["A) Centrifugal force", "B) Centripetal force", "C) Gravitational force", "D) Inertial force"],
+                    ["A) 9.8 m/s²", "B) 10.8 m/s²", "C) 8.9 m/s²", "D) 9.0 m/s²"],
+                    ["A) Product of masses", "B) Distance", "C) Square of distance", "D) Radius"],
+                    ["A) Joule", "B) Pascal", "C) Bar", "D) Dyne"],
+                    ["A) Every body attracts others", "B) Loss of weight = weight of displaced fluid", "C) Force = mass × acceleration", "D) Work = energy"],
+                    ["A) Solids", "B) Liquids", "C) Gases", "D) Liquids and gases"],
+                    ["A) Bernoulli's principle", "B) Pascal's law", "C) Boyle's law", "D) Archimedes' principle"],
+                    ["A) Boiling point", "B) Melting point", "C) Freezing point", "D) Sublimation point"],
+                    ["A) Calorie", "B) Joule", "C) Erg", "D) Watt"],
+                    ["A) 1 g by 1 °C", "B) 1 kg by 1 °C", "C) 1 mole by 1 °C", "D) 1 L by 1 °C"],
+                    ["A) Atoms shrink", "B) Kinetic energy of molecules increases", "C) Bonds shorten", "D) Pressure decreases"],
+                    ["A) Conservation of energy", "B) Constant temperature", "C) Irreversible process", "D) Entropy"],
+                    ["A) Energy", "B) Disorder", "C) Pressure", "D) Temperature"],
+                    ["A) Voltmeter", "B) Ammeter", "C) Galvanometer", "D) Ohmmeter"],
+                    ["A) Ampere", "B) Coulomb", "C) Volt", "D) Joule"],
+                    ["A) I = V/R", "B) V = IR", "C) R = V/I", "D) All are equivalent"],
+                    ["A) Length only", "B) Temperature only", "C) Length, area, and material", "D) Area only"],
+                    ["A) P = IV", "B) E = Pt", "C) V = IR", "D) R = V/I"],
+                    ["A) Circular", "B) Straight", "C) Elliptical", "D) Random"],
+                    ["A) Current", "B) Magnetic field", "C) Voltage", "D) Force"],
+                    ["A) Tesla", "B) Weber", "C) Gauss", "D) Coulomb"],
+                    ["A) Faraday", "B) Ampere", "C) Maxwell", "D) Coulomb"],
+                    ["A) Static electricity", "B) Mutual induction", "C) Resistance change", "D) Capacitance"],
+                    ["A) 3 × 10⁶ m/s", "B) 3 × 10⁸ m/s", "C) 3 × 10⁵ m/s", "D) 3 × 10⁴ m/s"],
+                    ["A) Red", "B) Blue", "C) Green", "D) Yellow"],
+                    ["A) sin i / sin r", "B) sin r / sin i", "C) i / r", "D) 1 / sin i"],
+                    ["A) Negative", "B) Positive", "C) Zero", "D) Infinite"],
+                    ["A) Electrons strike a metal target", "B) Atoms absorb visible light", "C) Nuclei decay", "D) Gamma rays scatter"]
+                ]
+            },
+            {
+                id: "english",
+                title: "🗣️ ENGLISH",
+                questions: [
+                    "Choose the correct synonym of 'Eminent':",
+                    "Choose the word opposite in meaning to 'Transparent':",
+                    "Choose the correct indirect speech: He said, 'I am reading a book.'",
+                    "Select the correctly punctuated sentence:",
+                    "Identify the part of speech of the underlined word: He runs quickly.",
+                    "Choose the sentence with correct subject–verb agreement:",
+                    "Fill in the blank: He has been living in Karachi _____ 2010.",
+                    "Choose the correct form of the verb: If he _____ harder, he would have passed.",
+                    "Choose the correct preposition: They are interested _____ learning English."
+                ],
+                options: [
+                    ["A) Unknown", "B) Distinguished", "C) Ordinary", "D) Minor"],
+                    ["A) Clear", "B) Translucent", "C) Opaque", "D) Bright"],
+                    ["A) He said he reads a book.", "B) He said he is reading a book.", "C) He said that he was reading a book.", "D) He said that he read a book."],
+                    ["A) Its a lovely day isn't it?", "B) It's a lovely day, isn't it?", "C) Its a lovely day, isn't it.", "D) It's a lovely day isn't it."],
+                    ["A) Adjective", "B) Adverb", "C) Verb", "D) Noun"],
+                    ["A) The list of items are long.", "B) The list of items is long.", "C) The lists of item is long.", "D) The lists of item are long."],
+                    ["A) For", "B) Since", "C) From", "D) By"],
+                    ["A) Worked", "B) Works", "C) Has worked", "D) Had worked"],
+                    ["A) For", "B) In", "C) At", "D) On"]
+                ]
+            },
+            {
+                id: "reasoning",
+                title: "🧩 LOGICAL REASONING",
+                questions: [
+                    "If all roses are flowers and some flowers fade quickly, which of the following must be true?",
+                    "Which number should come next in the series? 2, 6, 12, 20, 30, ?",
+                    "If 'TABLE' is coded as 'VDEOH,' then 'CHAIR' will be coded as:",
+                    "Identify the missing term: 3 : 9 :: 4 : ?",
+                    "All cats are animals. Some animals are black. Therefore:",
+                    "If A = 1, B = 3, C = 5, then what is the sum of the letters in 'BAD'?",
+                    "Choose the most logical conclusion: No pencils are pens. All pens are blue.",
+                    "Which figure completes the pattern: ▲ ◆ ▲ ◆ ▲ ?",
+                    "Five friends — Ali, Bilal, Danish, Farhan, and Haider — are sitting in a row. Ali is to the left of Bilal but right of Danish. Farhan is between Bilal and Haider. Who is sitting in the middle?"
+                ],
+                options: [
+                    ["A) All roses fade quickly.", "B) Some roses fade quickly.", "C) Some flowers are roses.", "D) Some fading things are roses."],
+                    ["A) 36", "B) 40", "C) 42", "D) 56"],
+                    ["A) FKDLU", "B) FDKLU", "C) JDKLU", "D) FJDNU"],
+                    ["A) 12", "B) 15", "C) 16", "D) 8"],
+                    ["A) All cats are black.", "B) Some cats may be black.", "C) No cats are black.", "D) Some animals are cats."],
+                    ["A) 12", "B) 13", "C) 14", "D) 15"],
+                    ["A) All pencils are blue.", "B) Some pencils are blue.", "C) No pencils are blue.", "D) No conclusion can be drawn."],
+                    ["A) ◆", "B) ▲", "C) ⬤", "D) ⬛"],
+                    ["A) Ali", "B) Bilal", "C) Farhan", "D) Danish"]
+                ]
+            }
+        ];
+
+        // Global variables
+        let userAnswers = {};
+        let timerInterval;
+        let timeLeft = 3 * 60 * 60; // 3 hours in seconds
+        let isHeaderCollapsed = false;
+
+        // Initialize the test
+        document.addEventListener('DOMContentLoaded', function() {
+            renderTest();
+            startTimer();
+            
+            // Add event listeners
+            document.getElementById('submit-btn').addEventListener('click', submitTest);
+            document.getElementById('reset-btn').addEventListener('click', resetTest);
+            document.getElementById('reset-btn-header').addEventListener('click', resetTest);
+            
+            // Add navigation button event listeners
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const sectionId = this.dataset.section;
+                    switchSection(sectionId);
+                });
+            });
+            
+            // Add header toggle functionality
+            document.getElementById('toggle-header').addEventListener('click', toggleHeader);
+        });
+
+        // Toggle header collapse/expand
+        function toggleHeader() {
+            const header = document.getElementById('main-header');
+            const headerExpanded = document.getElementById('header-expanded');
+            const body = document.body;
+            
+            isHeaderCollapsed = !isHeaderCollapsed;
+            
+            if (isHeaderCollapsed) {
+                header.classList.add('collapsed');
+                headerExpanded.classList.add('collapsed');
+                body.classList.add('header-collapsed');
+                document.getElementById('toggle-header').textContent = '☰';
+            } else {
+                header.classList.remove('collapsed');
+                headerExpanded.classList.remove('collapsed');
+                body.classList.remove('header-collapsed');
+                document.getElementById('toggle-header').textContent = '✕';
+            }
+        }
+
+        // Switch between sections
+        function switchSection(sectionId) {
+            // Update active button
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`.nav-btn[data-section="${sectionId}"]`).classList.add('active');
+            
+            // Show selected section
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(`section-${sectionId}`).classList.add('active');
+            
+            // Scroll to top of section
+            document.getElementById(`section-${sectionId}`).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Render the test
+        function renderTest() {
+            const testContainer = document.getElementById('test-container');
+            testContainer.innerHTML = '';
+            
+            let questionNumber = 1;
+            
+            testData.forEach((section, sectionIndex) => {
+                const sectionElement = document.createElement('div');
+                sectionElement.className = 'section';
+                sectionElement.id = `section-${section.id}`;
+                
+                const sectionHeader = document.createElement('div');
+                sectionHeader.className = 'section-header';
+                
+                const sectionTitle = document.createElement('div');
+                sectionTitle.className = 'section-title';
+                sectionTitle.textContent = section.title;
+                
+                sectionHeader.appendChild(sectionTitle);
+                sectionElement.appendChild(sectionHeader);
+                
+                section.questions.forEach((question, questionIndex) => {
+                    const questionElement = document.createElement('div');
+                    questionElement.className = 'question';
+                    
+                    const questionText = document.createElement('div');
+                    questionText.className = 'question-text';
+                    questionText.textContent = `${questionNumber}. ${question}`;
+                    
+                    const optionsContainer = document.createElement('div');
+                    optionsContainer.className = 'options';
+                    
+                    section.options[questionIndex].forEach((option, optionIndex) => {
+                        const optionElement = document.createElement('div');
+                        optionElement.className = 'option';
+                        optionElement.textContent = option;
+                        optionElement.dataset.question = questionNumber;
+                        optionElement.dataset.option = String.fromCharCode(65 + optionIndex); // A, B, C, D
+                        
+                        optionElement.addEventListener('click', function() {
+                            selectOption(this);
+                        });
+                        
+                        optionsContainer.appendChild(optionElement);
+                    });
+                    
+                    const feedbackElement = document.createElement('div');
+                    feedbackElement.className = 'feedback';
+                    feedbackElement.id = `feedback-${questionNumber}`;
+                    
+                    questionElement.appendChild(questionText);
+                    questionElement.appendChild(optionsContainer);
+                    questionElement.appendChild(feedbackElement);
+                    
+                    sectionElement.appendChild(questionElement);
+                    questionNumber++;
+                });
+                
+                testContainer.appendChild(sectionElement);
+            });
+        }
+
+        // Select an option
+        function selectOption(optionElement) {
+            const questionNumber = optionElement.dataset.question;
+            const selectedOption = optionElement.dataset.option;
+            
+            // Remove selected class from all options in this question
+            const options = document.querySelectorAll(`.option[data-question="${questionNumber}"]`);
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            optionElement.classList.add('selected');
+            
+            // Store user's answer
+            userAnswers[questionNumber] = selectedOption;
+            
+            // Hide any previous feedback
+            const feedbackElement = document.getElementById(`feedback-${questionNumber}`);
+            feedbackElement.className = 'feedback';
+            feedbackElement.style.display = 'none';
+        }
+
+        // Start the timer
+        function startTimer() {
+            updateTimerDisplay();
+            
+            timerInterval = setInterval(function() {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitTest();
+                    alert("Time's up! Your test has been submitted automatically.");
+                }
+            }, 1000);
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            const hours = Math.floor(timeLeft / 3600);
+            const minutes = Math.floor((timeLeft % 3600) / 60);
+            const seconds = timeLeft % 60;
+            
+            const timerElement = document.getElementById('timer');
+            timerElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Change color when time is running low
+            if (timeLeft < 300) { // 5 minutes
+                timerElement.style.color = '#e74c3c';
+            } else if (timeLeft < 900) { // 15 minutes
+                timerElement.style.color = '#f39c12';
+            }
+        }
+
+        // Submit the test
+        function submitTest() {
+            clearInterval(timerInterval);
+            
+            let totalScore = 0;
+            let sectionScores = [0, 0, 0, 0, 0];
+            let sectionTotals = [81, 45, 36, 9, 9];
+            
+            // Calculate scores
+            for (let questionNumber in userAnswers) {
+                const userAnswer = userAnswers[questionNumber];
+                const correctAnswer = answerKey[questionNumber];
+                
+                if (userAnswer === correctAnswer) {
+                    totalScore++;
+                    
+                    // Determine which section this question belongs to
+                    let qNum = parseInt(questionNumber);
+                    if (qNum <= 81) {
+                        sectionScores[0]++;
+                    } else if (qNum <= 126) {
+                        sectionScores[1]++;
+                    } else if (qNum <= 162) {
+                        sectionScores[2]++;
+                    } else if (qNum <= 171) {
+                        sectionScores[3]++;
+                    } else {
+                        sectionScores[4]++;
+                    }
+                }
+                
+                // Show feedback for each question
+                const options = document.querySelectorAll(`.option[data-question="${questionNumber}"]`);
+                const feedbackElement = document.getElementById(`feedback-${questionNumber}`);
+                
+                options.forEach(opt => {
+                    if (opt.dataset.option === correctAnswer) {
+                        opt.classList.add('correct');
+                    } else if (opt.dataset.option === userAnswer && userAnswer !== correctAnswer) {
+                        opt.classList.add('incorrect');
+                    }
+                });
+                
+                if (userAnswer === correctAnswer) {
+                    feedbackElement.textContent = "Correct!";
+                    feedbackElement.className = 'feedback correct';
+                } else {
+                    feedbackElement.textContent = `Incorrect. The correct answer is ${correctAnswer}.`;
+                    feedbackElement.className = 'feedback incorrect';
+                }
+            }
+            
+            // Show results
+            showResults(totalScore, sectionScores, sectionTotals);
+            
+            // Scroll to results
+            document.getElementById('results-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Show results
+        function showResults(totalScore, sectionScores, sectionTotals) {
+            const resultsContainer = document.getElementById('results-container');
+            const scoreSummary = document.getElementById('score-summary');
+            const totalScoreValue = document.getElementById('total-score-value');
+            const answerKeyContainer = document.getElementById('answer-key');
+            
+            // Clear previous results
+            scoreSummary.innerHTML = '';
+            answerKeyContainer.innerHTML = '';
+            
+            // Add section score cards
+            const sectionTitles = ["Biology", "Chemistry", "Physics", "English", "Logical Reasoning"];
+            
+            sectionTitles.forEach((title, index) => {
+                const scoreCard = document.createElement('div');
+                scoreCard.className = 'score-card';
+                
+                const titleElement = document.createElement('h3');
+                titleElement.textContent = title;
+                
+                const scoreElement = document.createElement('div');
+                scoreElement.className = 'score-value';
+                scoreElement.textContent = `${sectionScores[index]}/${sectionTotals[index]}`;
+                
+                scoreCard.appendChild(titleElement);
+                scoreCard.appendChild(scoreElement);
+                scoreSummary.appendChild(scoreCard);
+            });
+            
+            // Set total score
+            totalScoreValue.textContent = `${totalScore}/180`;
+            
+            // Create answer key
+            const answerKeyTitle = document.createElement('h3');
+            answerKeyTitle.textContent = "Answer Key";
+            answerKeyContainer.appendChild(answerKeyTitle);
+            
+            const answerList = document.createElement('div');
+            answerList.className = 'answer-list';
+            
+            for (let i = 1; i <= 180; i++) {
+                const answerItem = document.createElement('div');
+                answerItem.className = 'answer-item';
+                
+                const userAnswer = userAnswers[i] || 'Not answered';
+                const correctAnswer = answerKey[i];
+                const isCorrect = userAnswer === correctAnswer;
+                
+                if (isCorrect) {
+                    answerItem.classList.add('correct');
+                } else {
+                    answerItem.classList.add('incorrect');
+                }
+                
+                answerItem.textContent = `Q${i}: Your answer: ${userAnswer}, Correct: ${correctAnswer}`;
+                answerList.appendChild(answerItem);
+            }
+            
+            answerKeyContainer.appendChild(answerList);
+            
+            // Show results container
+            resultsContainer.style.display = 'block';
+        }
+
+        // Reset the test
+        function resetTest() {
+            if (confirm("Are you sure you want to reset the test? All your answers will be lost.")) {
+                clearInterval(timerInterval);
+                userAnswers = {};
+                timeLeft = 3 * 60 * 60;
+                
+                // Re-render test
+                renderTest();
+                
+                // Restart timer
+                startTimer();
+                
+                // Hide results
+                document.getElementById('results-container').style.display = 'none';
+                
+                // Switch to instructions
+                switchSection('instructions');
+                
+                // Scroll to top
+                window.scrollTo(0, 0);
+            }
+        }
+    </script>
+</body>
+</html>
