@@ -1,1033 +1,1036 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comprehensive Test</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        h1 {
-            text-align: center;
-            margin-bottom: 10px;
-            font-size: 2.2rem;
-        }
-        
-        .timer-container {
-            background-color: #fff;
-            color: #333;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        #timer {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #e74c3c;
-        }
-        
-        .instructions {
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        .instructions h2 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-size: 1.5rem;
-        }
-        
-        .instructions ul {
-            padding-left: 20px;
-        }
-        
-        .instructions li {
-            margin-bottom: 8px;
-        }
-        
-        .section {
-            background-color: #fff;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-        
-        .section-title {
-            font-size: 1.8rem;
-            color: #2c3e50;
-        }
-        
-        .section-score {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #3498db;
-        }
-        
-        .question {
-            margin-bottom: 20px;
-            padding: 15px;
-            border-radius: 8px;
-            background-color: #f8f9fa;
-            transition: all 0.3s ease;
-        }
-        
-        .question:hover {
-            background-color: #edf2f7;
-        }
-        
-        .question-text {
-            font-weight: 600;
-            margin-bottom: 12px;
-            font-size: 1.1rem;
-        }
-        
-        .options {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
-        
-        .option {
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .option:hover {
-            background-color: #e3f2fd;
-            border-color: #2196f3;
-        }
-        
-        .option.selected {
-            background-color: #bbdefb;
-            border-color: #2196f3;
-            font-weight: bold;
-        }
-        
-        .option.correct {
-            background-color: #c8e6c9;
-            border-color: #4caf50;
-        }
-        
-        .option.incorrect {
-            background-color: #ffcdd2;
-            border-color: #f44336;
-        }
-        
-        .feedback {
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            display: none;
-        }
-        
-        .feedback.correct {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            display: block;
-        }
-        
-        .feedback.incorrect {
-            background-color: #ffebee;
-            color: #c62828;
-            display: block;
-        }
-        
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-        
-        button {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        #submit-btn {
-            background-color: #3498db;
-            color: white;
-        }
-        
-        #submit-btn:hover {
-            background-color: #2980b9;
-        }
-        
-        #reset-btn {
-            background-color: #e74c3c;
-            color: white;
-        }
-        
-        #reset-btn:hover {
-            background-color: #c0392b;
-        }
-        
-        .results {
-            background-color: #fff;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 30px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: none;
-        }
-        
-        .results h2 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 1.8rem;
-        }
-        
-        .score-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .score-card {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-        }
-        
-        .score-card h3 {
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-        
-        .score-value {
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
-        
-        .total-score {
-            text-align: center;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2px solid #f0f0f0;
-        }
-        
-        .total-score h3 {
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-        
-        #total-score-value {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #3498db;
-        }
-        
-        @media (max-width: 768px) {
-            .options {
-                grid-template-columns: 1fr;
-            }
-            
-            .controls {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            button {
-                width: 100%;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Attendance Management System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  body { background: #f8f9fa; font-family: system-ui, sans-serif; margin-bottom: 60px; user-select: none; }
+  .container { max-width: 1300px; }
+  .tab { cursor: pointer; }
+  .tab.active { background: #007bff; color: white; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .status-select { width: 160px; font-weight: bold; }
+  .status-present { background: #d4edda !important; color: #155724; }
+  .status-late { background: #cfe2ff !important; color: #0d6efd; }
+  .status-ontime { background: #d1e7dd !important; color: #198754; }
+  .status-absent { background: #f8d7da !important; color: #721c24; }
+  .status-casual { background: #fff3cd !important; color: #856404; }
+  .status-earned { background: #f8d7da !important; color: #d63384; }
+  .debug { background: #e7f3ff; padding: 10px; border-radius: 6px; font-size: 0.9rem; }
+  .card { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  .badge-present { background: #28a745; }
+  .badge-late { background: #0d6efd; }
+  .badge-ontime { background: #198754; }
+  .badge-absent { background: #dc3545; }
+  .badge-casual { background: #ffc107; color: #212529; }
+  .badge-earned { background: #d63384; color: white; }
+  .top-bar { background: #007bff; color: white; padding: 12px; border-radius: 8px; margin-bottom: 15px; }
+  .top-bar .btn { margin: 0 5px; }
+  .admin-only { display: none; }
+  .logged-in .admin-only { display: inline-block; }
+  .login-box { max-width: 400px; margin: 50px auto; }
+  .footer { position: fixed; bottom: 0; left: 0; width: 100%; background: #343a40; color: #fff; text-align: center; padding: 12px 0; font-size: 0.9rem; z-index: 1000; }
+  .footer a { color: #ffc107; text-decoration: none; }
+  canvas { max-height: 300px; }
+  .preview-card { border: 1px solid #ddd; border-radius: 8px; padding: 10px; margin: 5px; }
+  .print-btn { position: absolute; top: 10px; right: 10px; z-index: 10; }
+  .no-print { print-color-adjust: exact; }
+  @media print {
+    body * { visibility: hidden; }
+    .section.active, .section.active * { visibility: visible; }
+    .section.active { position: absolute; left: 0; top: 0; width: 100%; }
+    .no-print, .top-bar, .footer, .nav-tabs, .print-btn { display: none !important; }
+    .table { font-size: 11px; }
+    .card { box-shadow: none; border: 1px solid #ddd; margin-bottom: 15px; }
+    .badge { font-size: 10px; }
+  }
+</style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>Comprehensive Knowledge Test</h1>
-            <p>Test your knowledge in Biology, Chemistry, Physics, English, and Logical Reasoning</p>
-        </header>
-        
-        <div class="timer-container">
-            <h2>Time Remaining</h2>
-            <div id="timer">03:00:00</div>
-        </div>
-        
-        <div class="instructions">
-            <h2>Instructions</h2>
-            <ul>
-                <li>This test contains 180 questions divided into 5 sections.</li>
-                <li>You have 3 hours to complete the test.</li>
-                <li>Select your answer by clicking on the option.</li>
-                <li>You can change your answer anytime before submitting.</li>
-                <li>Click "Submit Test" when you're finished to see your results.</li>
-                <li>Use "Reset Test" to clear all your answers and start over.</li>
-            </ul>
-        </div>
-        
-        <div id="test-container">
-            <!-- Sections will be dynamically inserted here -->
-        </div>
-        
-        <div class="controls">
-            <button id="reset-btn">Reset Test</button>
-            <button id="submit-btn">Submit Test</button>
-        </div>
-        
-        <div class="results" id="results-container">
-            <h2>Test Results</h2>
-            <div class="score-summary" id="score-summary">
-                <!-- Score cards will be dynamically inserted here -->
-            </div>
-            <div class="total-score">
-                <h3>Total Score</h3>
-                <div id="total-score-value">0/180</div>
-            </div>
-        </div>
+<body class="bg-light">
+
+<!-- LOGIN -->
+<div id="loginScreen" class="container login-box">
+  <div class="card">
+    <div class="card-header bg-primary text-white text-center"><h5>Admin Login</h5></div>
+    <div class="card-body">
+      <div class="mb-3"><label>Username</label><input type="text" id="username" class="form-control" placeholder="Enter username"></div>
+      <div class="mb-3"><label>Password</label><input type="password" id="password" class="form-control" placeholder="Enter password"></div>
+      <button id="loginBtn" class="btn btn-success w-100">Login</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" class="container py-4" style="display:none;">
+  <div class="top-bar text-center d-flex justify-content-between align-items-center flex-wrap gap-2 p-3">
+    <h4 class="mb-0 text-white">Attendance Management System</h4>
+    <div>
+      <button id="saveBtn" class="btn btn-success btn-sm">Save All</button>
+      <button id="previewBtn" class="btn btn-info btn-sm text-white">Preview</button>
+      <button id="downloadBtn" class="btn btn-primary btn-sm">Download Full CSV</button>
+      <button id="clearAllBtn" class="btn btn-danger btn-sm admin-only">Clear All</button>
+      <button id="logoutBtn" class="btn btn-outline-light btn-sm">Logout</button>
+    </div>
+  </div>
+  <div class="debug mb-3" id="debug">Ready.</div>
+
+  <!-- Print Button (Visible in all tabs) -->
+  <button class="btn btn-secondary btn-sm print-btn no-print" onclick="window.print()">Print This Tab</button>
+
+  <!-- Tabs -->
+  <ul class="nav nav-tabs mb-4">
+    <li class="nav-item"><a class="nav-link tab active" data-tab="attendance">Attendance</a></li>
+    <li class="nav-item"><a class="nav-link tab" data-tab="lateontime">Late & On-Time</a></li>
+    <li class="nav-item"><a class="nav-link tab" data-tab="dashboard">Dashboard</a></li>
+    <li class="nav-item"><a class="nav-link tab" data-tab="empreport">Employee Report</a></li>
+    <li class="nav-item"><a class="nav-link tab" data-tab="report">Report</a></li>
+    <li class="nav-item"><a class="nav-link tab" data-tab="analytics">Analytics</a></li>
+    <li class="nav-item"><a class="nav-link tab admin-only" data-tab="admin">Admin</a></li>
+  </ul>
+
+  <!-- ATTENDANCE -->
+  <div id="attendance" class="section active">
+    <div class="row mb-3 align-items-end">
+      <div class="col-md-3">
+        <label class="form-label">Date</label>
+        <input type="date" id="attDate" class="form-control" max="">
+      </div>
+      <div class="col-auto">
+        <button id="todayBtn" class="btn btn-outline-primary btn-sm">Today</button>
+        <button id="refreshBtn" class="btn btn-outline-secondary btn-sm">Refresh</button>
+      </div>
+    </div>
+    <div class="row g-3 mb-3" id="attPreview"></div>
+    <div class="table-responsive">
+      <table class="table table-sm table-bordered align-middle">
+        <thead class="table-light">
+          <tr><th>#</th><th>Name</th><th>Scale</th><th>Designation</th><th>Status</th></tr>
+        </thead>
+        <tbody id="attTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- LATE & ON-TIME -->
+  <div id="lateontime" class="section">
+    <div class="row mb-3 align-items-end">
+      <div class="col-md-3">
+        <label class="form-label">Date</label>
+        <input type="date" id="lotDate" class="form-control" max="">
+      </div>
+      <div class="col-auto">
+        <button id="lotTodayBtn" class="btn btn-outline-primary btn-sm">Today</button>
+        <button id="lotRefreshBtn" class="btn btn-outline-secondary btn-sm">Refresh</button>
+        <button id="lotSaveBtn" class="btn btn-success btn-sm">Save & Update</button>
+      </div>
+    </div>
+    <div class="row g-3 mb-3" id="lotPreview"></div>
+    <div class="table-responsive">
+      <table class="table table-sm table-bordered align-middle">
+        <thead class="table-light">
+          <tr><th>#</th><th>Name</th><th>Scale</th><th>Designation</th><th>Late Status</th></tr>
+        </thead>
+        <tbody id="lotTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="section">
+    <div class="row mb-3 align-items-end">
+      <div class="col-md-3">
+        <label class="form-label">Date</label>
+        <input type="date" id="dashDate" class="form-control" max="">
+      </div>
+      <div class="col-auto">
+        <button id="dashTodayBtn" class="btn btn-outline-primary btn-sm">Today</button>
+        <button id="dashDownloadBtn" class="btn btn-success btn-sm">Download CSV</button>
+      </div>
     </div>
 
-    <script>
-        // Answer key
-        const answerKey = {
-            // Biology (1-81)
-            1: 'C', 2: 'B', 3: 'C', 4: 'C', 5: 'C', 6: 'B', 7: 'B', 8: 'B', 9: 'B', 10: 'C',
-            11: 'A', 12: 'C', 13: 'B', 14: 'B', 15: 'A', 16: 'B', 17: 'B', 18: 'C', 19: 'C', 20: 'B',
-            21: 'A', 22: 'C', 23: 'C', 24: 'B', 25: 'B', 26: 'B', 27: 'B', 28: 'B', 29: 'B', 30: 'A',
-            31: 'B', 32: 'B', 33: 'B', 34: 'B', 35: 'C', 36: 'B', 37: 'B', 38: 'C', 39: 'A', 40: 'B',
-            41: 'B', 42: 'A', 43: 'D', 44: 'C', 45: 'B', 46: 'B', 47: 'A', 48: 'C', 49: 'B', 50: 'B',
-            51: 'C', 52: 'B', 53: 'B', 54: 'B', 55: 'B', 56: 'B', 57: 'C', 58: 'B', 59: 'B', 60: 'B',
-            61: 'A', 62: 'B', 63: 'A', 64: 'B', 65: 'B', 66: 'C', 67: 'B', 68: 'A', 69: 'B', 70: 'B',
-            71: 'B', 72: 'C', 73: 'C', 74: 'C', 75: 'B', 76: 'C', 77: 'B', 78: 'A', 79: 'B', 80: 'B', 81: 'B',
-            
-            // Chemistry (82-126)
-            82: 'A', 83: 'C', 84: 'B', 85: 'A', 86: 'B', 87: 'C', 88: 'B', 89: 'A', 90: 'C', 91: 'C',
-            92: 'B', 93: 'A', 94: 'B', 95: 'B', 96: 'B', 97: 'B', 98: 'C', 99: 'A', 100: 'B', 101: 'B',
-            102: 'C', 103: 'B', 104: 'B', 105: 'B', 106: 'A', 107: 'B', 108: 'B', 109: 'B', 110: 'B', 111: 'C',
-            112: 'C', 113: 'A', 114: 'B', 115: 'A', 116: 'B', 117: 'A', 118: 'A', 119: 'B', 120: 'B', 121: 'B',
-            122: 'A', 123: 'A', 124: 'B', 125: 'B', 126: 'B',
-            
-            // Physics (127-162)
-            127: 'B', 128: 'B', 129: 'B', 130: 'C', 131: 'D', 132: 'B', 133: 'C', 134: 'A', 135: 'B', 136: 'A',
-            137: 'C', 138: 'B', 139: 'B', 140: 'D', 141: 'B', 142: 'B', 143: 'B', 144: 'B', 145: 'B', 146: 'A',
-            147: 'B', 148: 'B', 149: 'B', 150: 'B', 151: 'C', 152: 'B', 153: 'A', 154: 'B', 155: 'B', 156: 'A',
-            157: 'B', 158: 'B', 159: 'B', 160: 'A', 161: 'B', 162: 'A',
-            
-            // English (163-171)
-            163: 'B', 164: 'C', 165: 'C', 166: 'B', 167: 'B', 168: 'B', 169: 'B', 170: 'D', 171: 'B',
-            
-            // Logical Reasoning (172-180)
-            172: 'C', 173: 'C', 174: 'A', 175: 'C', 176: 'B', 177: 'C', 178: 'D', 179: 'A', 180: 'C'
-        };
+    <!-- STAT CARDS -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-2"><div class="card text-center p-3 bg-success text-white h-100"><h6>Present</h6><h3 id="pCount">0</h3></div></div>
+      <div class="col-md-2"><div class="card text-center p-3 bg-warning text-dark h-100"><h6>Casual</h6><h3 id="cCount">0</h3></div></div>
+      <div class="col-md-2"><div class="card text-center p-3 bg-danger text-white h-100"><h6>Absent</h6><h3 id="aCount">0</h3></div></div>
+      <div class="col-md-2"><div class="card text-center p-3 bg-info text-white h-100"><h6>On-Time</h6><h3 id="otCount">0</h3></div></div>
+      <div class="col-md-2"><div class="card text-center p-3 bg-primary text-white h-100"><h6>Late</h6><h3 id="lCount">0</h3></div></div>
+      <div class="col-md-2"><div class="card text-center p-3" style="background:#d63384;color:white"><h6>Earned</h6><h3 id="eCount">0</h3></div></div>
+    </div>
 
-        // Test data
-        const testData = [
-            {
-                title: "🧬 BIOLOGY",
-                questions: [
-                    "Which of the following is not a viral disease?",
-                    "The double-helical model of DNA was proposed by:",
-                    "The main component of the bacterial cell wall is:",
-                    "Which of the following organelles is responsible for cellular respiration?",
-                    "The bond between two amino acids in a protein is called a:",
-                    "Which of the following is not a property of water important for life?",
-                    "The organelle responsible for packaging and secretion of proteins is:",
-                    "In RNA, thymine is replaced by:",
-                    "The term 'gene' is best defined as:",
-                    "The prokaryotic cell lacks:",
-                    "The site of protein synthesis is:",
-                    "Which of the following is the structural carbohydrate in plant cell walls?",
-                    "The main function of the smooth endoplasmic reticulum is:",
-                    "In human respiration, gas exchange occurs in:",
-                    "The functional unit of the kidney is called:",
-                    "Which part of the brain controls balance and coordination?",
-                    "Which of the following best describes the function of mitochondria?",
-                    "During muscle contraction, which ion plays a central role?",
-                    "The basic structural and functional unit of life is:",
-                    "The enzyme that unwinds DNA during replication is:",
-                    "Crossing over occurs during which phase of meiosis?",
-                    "The genetic disorder hemophilia is:",
-                    "In which process is oxygen the final electron acceptor?",
-                    "Which of the following diseases is caused by a retrovirus?",
-                    "The connective tissue connecting muscles to bones is called:",
-                    "The largest component of human blood is:",
-                    "Which chamber of the heart receives deoxygenated blood from the body?",
-                    "The functional role of the lymphatic system includes:",
-                    "The enzyme pepsin acts on:",
-                    "The process of maintaining a constant internal environment is called:",
-                    "Which of the following describes osmoregulation in humans?",
-                    "The theory of natural selection was proposed by:",
-                    "Which of the following hormones controls the menstrual cycle?",
-                    "The part of the male reproductive system that stores sperm is:",
-                    "The process of forming mRNA from DNA is called:",
-                    "Which of the following is a function of the Golgi apparatus?",
-                    "The process of breakdown of glucose in absence of oxygen is called:",
-                    "Which of the following provides immunity after vaccination?",
-                    "The main structural protein in connective tissues is:",
-                    "Which of the following diseases is transmitted sexually?",
-                    "Which of the following occurs in the mitochondria?",
-                    "The energy currency of the cell is:",
-                    "Which of the following represents a polysaccharide?",
-                    "The process by which white blood cells engulf foreign particles is known as:",
-                    "The enzyme amylase converts starch into:",
-                    "Which organ controls body temperature in humans?",
-                    "The largest part of the human brain is:",
-                    "The reflex arc involves which of the following components?",
-                    "The term 'arthritis' refers to inflammation of:",
-                    "Which of the following is responsible for color vision?",
-                    "Which of the following is not a component of the central nervous system?",
-                    "The pacemaker of the human heart is:",
-                    "Which of the following organs secretes bile?",
-                    "The primary site of nutrient absorption in humans is:",
-                    "Which of the following substances is excreted mainly through lungs?",
-                    "The filtrate formed in the Bowman's capsule is called:",
-                    "The major nitrogenous waste in human urine is:",
-                    "Which of the following best defines excretion?",
-                    "Which organ of the excretory system acts in osmoregulation?",
-                    "The process of water reabsorption from the nephron takes place mainly in:",
-                    "Kidney stones are primarily composed of:",
-                    "The main role of ADH hormone is to:",
-                    "Which of the following is caused by deficiency of insulin?",
-                    "The thyroid gland requires which element for hormone synthesis?",
-                    "Which of the following is an example of passive immunity?",
-                    "Which of the following describes active immunity?",
-                    "The first line of defense in the human body includes:",
-                    "The causative agent of AIDS is:",
-                    "Which of the following cells directly destroy pathogens?",
-                    "Which of the following explains the role of monoclonal antibodies?",
-                    "The movement of water from a region of low solute concentration to high solute concentration is called:",
-                    "Which pigment is essential for photosynthesis?",
-                    "In plant cells, turgor pressure is maintained by:",
-                    "The process by which green plants make their food is called:",
-                    "Which of the following is a sexually transmitted viral disease?",
-                    "In which part of the human body does fertilization normally occur?",
-                    "The corpus luteum secretes:",
-                    "During pregnancy, which hormone maintains the uterine lining?",
-                    "Which of the following statements is true about Lamarckism?",
-                    "According to Darwin's theory, evolution occurs through:",
-                    "Biotechnology helps in disease control by:"
-                ],
-                options: [
-                    ["A) AIDS", "B) Measles", "C) Tuberculosis", "D) Influenza"],
-                    ["A) Hershey and Chase", "B) Watson and Crick", "C) Franklin and Wilkins", "D) Avery and MacLeod"],
-                    ["A) Cellulose", "B) Chitin", "C) Peptidoglycan", "D) Glycogen"],
-                    ["A) Ribosome", "B) Golgi apparatus", "C) Mitochondria", "D) Lysosome"],
-                    ["A) Hydrogen bond", "B) Ionic bond", "C) Peptide bond", "D) Glycosidic bond"],
-                    ["A) High specific heat", "B) Nonpolar nature", "C) Cohesion", "D) Solvent ability"],
-                    ["A) Endoplasmic reticulum", "B) Golgi apparatus", "C) Ribosome", "D) Nucleolus"],
-                    ["A) Cytosine", "B) Uracil", "C) Adenine", "D) Guanine"],
-                    ["A) A sequence of amino acids", "B) A segment of DNA coding for a protein", "C) A chromosome part", "D) A ribosomal RNA"],
-                    ["A) Plasma membrane", "B) Cytoplasm", "C) Nucleus", "D) Ribosomes"],
-                    ["A) Ribosome", "B) Nucleus", "C) Golgi body", "D) Lysosome"],
-                    ["A) Starch", "B) Glycogen", "C) Cellulose", "D) Chitin"],
-                    ["A) Protein synthesis", "B) Lipid synthesis", "C) Ribosome production", "D) DNA replication"],
-                    ["A) Bronchi", "B) Alveoli", "C) Trachea", "D) Larynx"],
-                    ["A) Nephron", "B) Neuron", "C) Glomerulus", "D) Tubule"],
-                    ["A) Cerebrum", "B) Cerebellum", "C) Medulla", "D) Hypothalamus"],
-                    ["A) Protein synthesis", "B) ATP production", "C) Photosynthesis", "D) Lipid digestion"],
-                    ["A) Na⁺", "B) K⁺", "C) Ca²⁺", "D) Mg²⁺"],
-                    ["A) Tissue", "B) Organ", "C) Cell", "D) System"],
-                    ["A) Ligase", "B) Helicase", "C) Polymerase", "D) Topoisomerase"],
-                    ["A) Prophase I", "B) Metaphase I", "C) Anaphase II", "D) Telophase II"],
-                    ["A) Autosomal dominant", "B) Autosomal recessive", "C) X-linked recessive", "D) Y-linked"],
-                    ["A) Glycolysis", "B) Krebs cycle", "C) Electron transport chain", "D) Fermentation"],
-                    ["A) Dengue", "B) AIDS", "C) Influenza", "D) Polio"],
-                    ["A) Ligament", "B) Tendon", "C) Cartilage", "D) Areolar tissue"],
-                    ["A) RBCs", "B) Plasma", "C) WBCs", "D) Platelets"],
-                    ["A) Left atrium", "B) Right atrium", "C) Left ventricle", "D) Right ventricle"],
-                    ["A) Transporting gases", "B) Transporting lymph and immune defense", "C) Producing RBCs", "D) Digesting proteins"],
-                    ["A) Fats", "B) Proteins", "C) Carbohydrates", "D) Vitamins"],
-                    ["A) Homeostasis", "B) Osmosis", "C) Diffusion", "D) Metabolism"],
-                    ["A) Regulation of glucose", "B) Regulation of water and salts", "C) Regulation of oxygen", "D) Regulation of hormones"],
-                    ["A) Lamarck", "B) Darwin", "C) Wallace", "D) Mendel"],
-                    ["A) Testosterone", "B) Estrogen", "C) Thyroxine", "D) Insulin"],
-                    ["A) Testes", "B) Epididymis", "C) Vas deferens", "D) Seminal vesicle"],
-                    ["A) Replication", "B) Translation", "C) Transcription", "D) Mutation"],
-                    ["A) Energy production", "B) Modification and packaging of proteins", "C) Lipid synthesis", "D) Ribosome production"],
-                    ["A) Glycolysis", "B) Fermentation", "C) Photosynthesis", "D) Oxidation"],
-                    ["A) Red blood cells", "B) Platelets", "C) Antibodies", "D) Hormones"],
-                    ["A) Collagen", "B) Keratin", "C) Actin", "D) Elastin"],
-                    ["A) Cholera", "B) Syphilis", "C) Tuberculosis", "D) Malaria"],
-                    ["A) Glycolysis", "B) Krebs cycle", "C) Fermentation", "D) Photosynthesis"],
-                    ["A) ATP", "B) ADP", "C) NADH", "D) FADH₂"],
-                    ["A) Glucose", "B) Maltose", "C) Sucrose", "D) Glycogen"],
-                    ["A) Pinocytosis", "B) Exocytosis", "C) Phagocytosis", "D) Endocytosis"],
-                    ["A) Glucose", "B) Maltose", "C) Fructose", "D) Sucrose"],
-                    ["A) Pituitary gland", "B) Hypothalamus", "C) Medulla", "D) Cerebrum"],
-                    ["A) Cerebrum", "B) Cerebellum", "C) Medulla", "D) Pons"],
-                    ["A) Only sensory neuron", "B) Only motor neuron", "C) Sensory, relay, and motor neurons", "D) Only brain neurons"],
-                    ["A) Muscles", "B) Joints", "C) Cartilage", "D) Tendons"],
-                    ["A) Rod cells", "B) Cone cells", "C) Bipolar cells", "D) Ganglion cells"],
-                    ["A) Brain", "B) Spinal cord", "C) Peripheral nerves", "D) Cerebrum"],
-                    ["A) AV node", "B) SA node", "C) Bundle of His", "D) Purkinje fibers"],
-                    ["A) Stomach", "B) Liver", "C) Pancreas", "D) Gallbladder"],
-                    ["A) Stomach", "B) Small intestine", "C) Large intestine", "D) Rectum"],
-                    ["A) Urea", "B) CO₂", "C) Ammonia", "D) Bile pigments"],
-                    ["A) Urine", "B) Glomerular filtrate", "C) Plasma", "D) Lymph"],
-                    ["A) Ammonia", "B) Uric acid", "C) Urea", "D) Creatinine"],
-                    ["A) Removal of feces", "B) Removal of nitrogenous wastes", "C) Release of hormones", "D) Absorption of nutrients"],
-                    ["A) Liver", "B) Kidney", "C) Skin", "D) Lungs"],
-                    ["A) Bowman's capsule", "B) Loop of Henle", "C) Collecting duct", "D) Ureter"],
-                    ["A) Calcium oxalate", "B) Sodium chloride", "C) Potassium sulfate", "D) Glucose"],
-                    ["A) Regulate blood glucose", "B) Regulate urine volume", "C) Stimulate ovulation", "D) Increase heart rate"],
-                    ["A) Diabetes mellitus", "B) Goiter", "C) Scurvy", "D) Rickets"],
-                    ["A) Iron", "B) Iodine", "C) Calcium", "D) Sodium"],
-                    ["A) Vaccination", "B) Maternal antibodies", "C) Infection recovery", "D) Herd immunity"],
-                    ["A) Antibodies from mother", "B) Antibodies from serum", "C) Antibodies produced by the host", "D) Transfer through placenta"],
-                    ["A) Antibodies", "B) Skin and mucous membranes", "C) Lymphocytes", "D) T-cells"],
-                    ["A) HIV", "B) HBV", "C) HCV", "D) HPV"],
-                    ["A) Helper T-cells", "B) Killer T-cells", "C) B-cells", "D) Mast cells"],
-                    ["A) Vaccine production", "B) Disease diagnosis and treatment", "C) Antibiotic synthesis", "D) Hormone release"],
-                    ["A) Diffusion", "B) Osmosis", "C) Filtration", "D) Active transport"],
-                    ["A) Xanthophyll", "B) Carotene", "C) Chlorophyll", "D) Anthocyanin"],
-                    ["A) Nucleus", "B) Cytoplasm", "C) Vacuole", "D) Mitochondria"],
-                    ["A) Respiration", "B) Transpiration", "C) Photosynthesis", "D) Photolysis"],
-                    ["A) Syphilis", "B) AIDS", "C) Gonorrhea", "D) Trichomoniasis"],
-                    ["A) Uterus", "B) Ovary", "C) Fallopian tube", "D) Vagina"],
-                    ["A) Estrogen", "B) Progesterone", "C) FSH", "D) LH"],
-                    ["A) Progesterone", "B) Estrogen", "C) Oxytocin", "D) Prolactin"],
-                    ["A) It supports natural selection", "B) It explains inheritance of acquired characters", "C) It involves mutations", "D) It refutes evolution"],
-                    ["A) Inheritance of acquired traits", "B) Natural selection", "C) Genetic drift", "D) Artificial selection"],
-                    ["A) Producing antibiotics", "B) Producing vaccines and diagnostic kits", "C) Increasing mutations", "D) Gene deletion"]
-                ]
-            },
-            {
-                title: "⚗️ CHEMISTRY",
-                questions: [
-                    "Which quantity represents the number of atoms in one mole of a substance?",
-                    "The limiting reagent is the one which:",
-                    "The theoretical yield is calculated from:",
-                    "The proton was discovered by:",
-                    "The shape of the p-orbital is:",
-                    "Which principle states that no two electrons can have the same set of quantum numbers?",
-                    "Which law relates volume and pressure at constant temperature?",
-                    "Standard temperature and pressure correspond to:",
-                    "For an ideal gas, PV = nRT represents:",
-                    "Hydrogen bonding is present in:",
-                    "The density of water is maximum at:",
-                    "The solid having long-range order is called:",
-                    "Lattice energy is the energy:",
-                    "A reaction that can proceed in both directions is called:",
-                    "According to Le Chatelier's principle, increasing pressure favors the reaction which:",
-                    "Common-ion effect is observed in:",
-                    "Buffer solution resists change in:",
-                    "The catalyst in the Haber process is:",
-                    "The rate of a reaction is expressed as:",
-                    "Activation energy is:",
-                    "The first law of thermodynamics states:",
-                    "Reaction which absorbs heat is:",
-                    "Hess's law deals with:",
-                    "Oxidation involves:",
-                    "The standard electrode potential of hydrogen is:",
-                    "VSEPR theory is used to predict:",
-                    "A σ-bond differs from a π-bond because:",
-                    "Water (H₂O) is polar because:",
-                    "Bond energy is directly proportional to:",
-                    "Elements in group I are called:",
-                    "Ionization energy generally:",
-                    "Reaction of sodium with water produces:",
-                    "D-block elements show variable:",
-                    "Organic chemistry deals with compounds of:",
-                    "Compounds with same molecular formula but different arrangement are:",
-                    "The general formula of alkanes is:",
-                    "The reaction of chlorine with methane in sunlight gives:",
-                    "The bond between carbon atoms in ethene is:",
-                    "Benzene shows mainly:",
-                    "The IUPAC name of acetylene is:",
-                    "Alkyl halides undergo:",
-                    "Alcohols on oxidation form:",
-                    "Phenol differs from ethanol because phenol:",
-                    "The functional group in aldehydes is:",
-                    "Proteins are polymers of:"
-                ],
-                options: [
-                    ["A) 6.022 × 10²³", "B) 3.011 × 10²³", "C) 1 × 10²³", "D) 12 × 10²³"],
-                    ["A) Is present in excess", "B) Stops the reaction", "C) Is completely consumed first", "D) Has lowest molar mass"],
-                    ["A) Experimental data", "B) Balanced chemical equation", "C) Molar volume", "D) Percent yield"],
-                    ["A) Goldstein", "B) Thomson", "C) Rutherford", "D) Dalton"],
-                    ["A) Spherical", "B) Dumbbell", "C) Linear", "D) Planar"],
-                    ["A) Aufbau", "B) Hund's", "C) Pauli exclusion", "D) Bohr's"],
-                    ["A) Charles'", "B) Boyle's", "C) Avogadro's", "D) Graham's"],
-                    ["A) 0 °C & 1 atm", "B) 25 °C & 1 atm", "C) 0 K & 1 atm", "D) 273 °C & 760 torr"],
-                    ["A) Avogadro's law", "B) Combined gas law", "C) Ideal gas equation", "D) Dalton's law"],
-                    ["A) CH₄", "B) H₂", "C) HF", "D) CO₂"],
-                    ["A) 0 °C", "B) 4 °C", "C) 10 °C", "D) 100 °C"],
-                    ["A) Crystalline", "B) Amorphous", "C) Polymeric", "D) Metallic glass"],
-                    ["A) Absorbed when lattice forms", "B) Released when ions combine", "C) Of covalent bonds", "D) Needed for fusion"],
-                    ["A) Irreversible", "B) Reversible", "C) Neutralization", "D) Spontaneous"],
-                    ["A) Produces more gas molecules", "B) Produces fewer gas molecules", "C) Is endothermic", "D) Has catalyst"],
-                    ["A) Strong acids", "B) Weak electrolytes", "C) Non-electrolytes", "D) Oxides"],
-                    ["A) Temperature", "B) Pressure", "C) pH", "D) Volume"],
-                    ["A) Fe", "B) Pt", "C) Ni", "D) Cu"],
-                    ["A) Change in pressure/time", "B) Change in concentration/time", "C) ΔT/ΔP", "D) Moles/time"],
-                    ["A) Energy released", "B) Energy required to start reaction", "C) Average kinetic energy", "D) Bond energy"],
-                    ["A) Entropy increases", "B) Energy can be created", "C) Energy is conserved", "D) Work = heat always"],
-                    ["A) Exothermic", "B) Endothermic", "C) Neutral", "D) Iso-thermal"],
-                    ["A) Reaction rate", "B) Path-independence of enthalpy", "C) Equilibrium constant", "D) Entropy change"],
-                    ["A) Gain of electrons", "B) Loss of electrons", "C) Gain of hydrogen", "D) Decrease in oxidation number"],
-                    ["A) 0 V", "B) 1 V", "C) −1 V", "D) 2 V"],
-                    ["A) Atomic mass", "B) Molecular shape", "C) Ionization energy", "D) Reaction rate"],
-                    ["A) σ is weaker", "B) σ is formed by end-to-end overlap", "C) π is single bond", "D) π allows rotation"],
-                    ["A) O–H bond non-polar", "B) Bent shape & ΔEN", "C) Linear molecule", "D) Symmetrical"],
-                    ["A) Bond length", "B) Bond strength", "C) Molecular size", "D) Electronegativity"],
-                    ["A) Alkaline earths", "B) Transition metals", "C) Alkali metals", "D) Halogens"],
-                    ["A) Increases down group", "B) Decreases across period", "C) Increases across period", "D) Constant"],
-                    ["A) NaOH + H₂", "B) NaCl + H₂O", "C) Na₂O", "D) Na₂CO₃"],
-                    ["A) Atomic number", "B) Valency", "C) Mass", "D) Periodicity"],
-                    ["A) Carbon", "B) Nitrogen", "C) Oxygen", "D) Hydrogen only"],
-                    ["A) Isotopes", "B) Isomers", "C) Allotropes", "D) Polymers"],
-                    ["A) CₙH₂ₙ₊₂", "B) CₙH₂ₙ", "C) CₙH₂ₙ₋₂", "D) CₙH₂ₙ₊₄"],
-                    ["A) CH₃Cl", "B) CH₄O", "C) C₂H₆", "D) C₂H₄"],
-                    ["A) Single", "B) Double (σ + π)", "C) Triple", "D) π-only"],
-                    ["A) Addition", "B) Substitution", "C) Elimination", "D) Hydration"],
-                    ["A) Ethene", "B) Ethyne", "C) Propene", "D) Propane"],
-                    ["A) Nucleophilic substitution", "B) Electrophilic addition", "C) Condensation", "D) Dehydration"],
-                    ["A) Acids or aldehydes", "B) Ethers", "C) Esters", "D) Halides"],
-                    ["A) Is non-acidic", "B) Shows electrophilic substitution", "C) Cannot hydrogen-bond", "D) Lacks hydroxyl group"],
-                    ["A) –CO–", "B) –CHO", "C) –COOH", "D) –OH"],
-                    ["A) Monosaccharides", "B) Amino acids", "C) Fatty acids", "D) Nucleotides"]
-                ]
-            },
-            {
-                title: "⚙️ PHYSICS",
-                questions: [
-                    "The SI unit of force is:",
-                    "The slope of a displacement–time graph gives:",
-                    "Newton's third law deals with:",
-                    "The unit of momentum is:",
-                    "The quantity which has both magnitude and direction but not unit is:",
-                    "The area under a velocity–time graph represents:",
-                    "Work is said to be done when:",
-                    "Power is the rate of:",
-                    "A body moving in a circle experiences:",
-                    "The gravitational acceleration on Earth is approximately:",
-                    "According to Newton's law of gravitation, force is inversely proportional to:",
-                    "The SI unit of pressure is:",
-                    "Archimedes' principle states that:",
-                    "Pascal's law applies to:",
-                    "The hydraulic press works on:",
-                    "The temperature at which a pure substance changes from solid to liquid is called:",
-                    "The SI unit of heat is:",
-                    "Specific heat capacity is defined as the heat required to raise the temperature of:",
-                    "Thermal expansion occurs because:",
-                    "The first law of thermodynamics is based on:",
-                    "Entropy is a measure of:",
-                    "The device used to measure electric current is:",
-                    "The SI unit of electric charge is:",
-                    "Ohm's law states that:",
-                    "The resistance of a conductor depends on:",
-                    "The energy used by an electric device is given by:",
-                    "The magnetic field around a straight current-carrying conductor is:",
-                    "The right-hand rule gives the direction of:",
-                    "The unit of magnetic flux is:",
-                    "Electromagnetic induction was discovered by:",
-                    "A transformer works on the principle of:",
-                    "The speed of light in vacuum is approximately:",
-                    "Which color of light has the shortest wavelength?",
-                    "The refractive index is defined as:",
-                    "The focal length of a convex lens is:",
-                    "X-rays are produced when:"
-                ],
-                options: [
-                    ["A) Joule", "B) Newton", "C) Pascal", "D) Watt"],
-                    ["A) Acceleration", "B) Velocity", "C) Force", "D) Momentum"],
-                    ["A) Force and motion", "B) Action and reaction", "C) Energy and work", "D) Inertia"],
-                    ["A) N·s", "B) kg·m", "C) kg·m/s", "D) N/m"],
-                    ["A) Force", "B) Displacement", "C) Velocity", "D) Vector"],
-                    ["A) Acceleration", "B) Distance", "C) Momentum", "D) Force"],
-                    ["A) There is displacement", "B) Force is applied", "C) Force causes displacement", "D) Time changes"],
-                    ["A) Energy transfer", "B) Force", "C) Momentum", "D) Acceleration"],
-                    ["A) Centrifugal force", "B) Centripetal force", "C) Gravitational force", "D) Inertial force"],
-                    ["A) 9.8 m/s²", "B) 10.8 m/s²", "C) 8.9 m/s²", "D) 9.0 m/s²"],
-                    ["A) Product of masses", "B) Distance", "C) Square of distance", "D) Radius"],
-                    ["A) Joule", "B) Pascal", "C) Bar", "D) Dyne"],
-                    ["A) Every body attracts others", "B) Loss of weight = weight of displaced fluid", "C) Force = mass × acceleration", "D) Work = energy"],
-                    ["A) Solids", "B) Liquids", "C) Gases", "D) Liquids and gases"],
-                    ["A) Bernoulli's principle", "B) Pascal's law", "C) Boyle's law", "D) Archimedes' principle"],
-                    ["A) Boiling point", "B) Melting point", "C) Freezing point", "D) Sublimation point"],
-                    ["A) Calorie", "B) Joule", "C) Erg", "D) Watt"],
-                    ["A) 1 g by 1 °C", "B) 1 kg by 1 °C", "C) 1 mole by 1 °C", "D) 1 L by 1 °C"],
-                    ["A) Atoms shrink", "B) Kinetic energy of molecules increases", "C) Bonds shorten", "D) Pressure decreases"],
-                    ["A) Conservation of energy", "B) Constant temperature", "C) Irreversible process", "D) Entropy"],
-                    ["A) Energy", "B) Disorder", "C) Pressure", "D) Temperature"],
-                    ["A) Voltmeter", "B) Ammeter", "C) Galvanometer", "D) Ohmmeter"],
-                    ["A) Ampere", "B) Coulomb", "C) Volt", "D) Joule"],
-                    ["A) I = V/R", "B) V = IR", "C) R = V/I", "D) All are equivalent"],
-                    ["A) Length only", "B) Temperature only", "C) Length, area, and material", "D) Area only"],
-                    ["A) P = IV", "B) E = Pt", "C) V = IR", "D) R = V/I"],
-                    ["A) Circular", "B) Straight", "C) Elliptical", "D) Random"],
-                    ["A) Current", "B) Magnetic field", "C) Voltage", "D) Force"],
-                    ["A) Tesla", "B) Weber", "C) Gauss", "D) Coulomb"],
-                    ["A) Faraday", "B) Ampere", "C) Maxwell", "D) Coulomb"],
-                    ["A) Static electricity", "B) Mutual induction", "C) Resistance change", "D) Capacitance"],
-                    ["A) 3 × 10⁶ m/s", "B) 3 × 10⁸ m/s", "C) 3 × 10⁵ m/s", "D) 3 × 10⁴ m/s"],
-                    ["A) Red", "B) Blue", "C) Green", "D) Yellow"],
-                    ["A) sin i / sin r", "B) sin r / sin i", "C) i / r", "D) 1 / sin i"],
-                    ["A) Negative", "B) Positive", "C) Zero", "D) Infinite"],
-                    ["A) Electrons strike a metal target", "B) Atoms absorb visible light", "C) Nuclei decay", "D) Gamma rays scatter"]
-                ]
-            },
-            {
-                title: "🗣️ ENGLISH",
-                questions: [
-                    "Choose the correct synonym of 'Eminent':",
-                    "Choose the word opposite in meaning to 'Transparent':",
-                    "Choose the correct indirect speech: He said, 'I am reading a book.'",
-                    "Select the correctly punctuated sentence:",
-                    "Identify the part of speech of the underlined word: He runs quickly.",
-                    "Choose the sentence with correct subject–verb agreement:",
-                    "Fill in the blank: He has been living in Karachi _____ 2010.",
-                    "Choose the correct form of the verb: If he _____ harder, he would have passed.",
-                    "Choose the correct preposition: They are interested _____ learning English."
-                ],
-                options: [
-                    ["A) Unknown", "B) Distinguished", "C) Ordinary", "D) Minor"],
-                    ["A) Clear", "B) Translucent", "C) Opaque", "D) Bright"],
-                    ["A) He said he reads a book.", "B) He said he is reading a book.", "C) He said that he was reading a book.", "D) He said that he read a book."],
-                    ["A) Its a lovely day isn't it?", "B) It's a lovely day, isn't it?", "C) Its a lovely day, isn't it.", "D) It's a lovely day isn't it."],
-                    ["A) Adjective", "B) Adverb", "C) Verb", "D) Noun"],
-                    ["A) The list of items are long.", "B) The list of items is long.", "C) The lists of item is long.", "D) The lists of item are long."],
-                    ["A) For", "B) Since", "C) From", "D) By"],
-                    ["A) Worked", "B) Works", "C) Has worked", "D) Had worked"],
-                    ["A) For", "B) In", "C) At", "D) On"]
-                ]
-            },
-            {
-                title: "🧩 LOGICAL REASONING",
-                questions: [
-                    "If all roses are flowers and some flowers fade quickly, which of the following must be true?",
-                    "Which number should come next in the series? 2, 6, 12, 20, 30, ?",
-                    "If 'TABLE' is coded as 'VDEOH,' then 'CHAIR' will be coded as:",
-                    "Identify the missing term: 3 : 9 :: 4 : ?",
-                    "All cats are animals. Some animals are black. Therefore:",
-                    "If A = 1, B = 3, C = 5, then what is the sum of the letters in 'BAD'?",
-                    "Choose the most logical conclusion: No pencils are pens. All pens are blue.",
-                    "Which figure completes the pattern: ▲ ◆ ▲ ◆ ▲ ?",
-                    "Five friends — Ali, Bilal, Danish, Farhan, and Haider — are sitting in a row. Ali is to the left of Bilal but right of Danish. Farhan is between Bilal and Haider. Who is sitting in the middle?"
-                ],
-                options: [
-                    ["A) All roses fade quickly.", "B) Some roses fade quickly.", "C) Some flowers are roses.", "D) Some fading things are roses."],
-                    ["A) 36", "B) 40", "C) 42", "D) 56"],
-                    ["A) FKDLU", "B) FDKLU", "C) JDKLU", "D) FJDNU"],
-                    ["A) 12", "B) 15", "C) 16", "D) 8"],
-                    ["A) All cats are black.", "B) Some cats may be black.", "C) No cats are black.", "D) Some animals are cats."],
-                    ["A) 12", "B) 13", "C) 14", "D) 15"],
-                    ["A) All pencils are blue.", "B) Some pencils are blue.", "C) No pencils are blue.", "D) No conclusion can be drawn."],
-                    ["A) ◆", "B) ▲", "C) ⬤", "D) ⬛"],
-                    ["A) Ali", "B) Bilal", "C) Farhan", "D) Danish"]
-                ]
-            }
-        ];
+    <!-- LISTS: Present → Casual → Late → Absent → Earned -->
+    <div class="row g-3">
+      <div class="col-md-6"><div class="card h-100"><div class="card-header bg-success text-white"><h6>Present</h6></div><div class="card-body p-0"><ul id="pList" class="list-group list-group-flush" style="max-height:320px;overflow:auto"></ul></div></div></div>
+      <div class="col-md-6"><div class="card h-100"><div class="card-header bg-warning text-dark"><h6>Casual Leave</h6></div><div class="card-body p-0"><ul id="cList" class="list-group list-group-flush" style="max-height:320px;overflow:auto"></ul></div></div></div>
+      <div class="col-md-6"><div class="card h-100"><div class="card-header bg-primary text-white"><h6>Late Comers</h6></div><div class="card-body p-0"><ul id="lateList" class="list-group list-group-flush" style="max-height:320px;overflow:auto"></ul></div></div></div>
+      <div class="col-md-6"><div class="card h-100"><div class="card-header bg-danger text-white"><h6>Absent</h6></div><div class="card-body p-0"><ul id="aList" class="list-group list-group-flush" style="max-height:320px;overflow:auto"></ul></div></div></div>
+      <div class="col-md-12"><div class="card h-100"><div class="card-header" style="background:#d63384;color:white"><h6>Earned Leave</h6></div><div class="card-body p-0"><ul id="eList" class="list-group list-group-flush" style="max-height:320px;overflow:auto"></ul></div></div></div>
+    </div>
+  </div>
 
-        // Global variables
-        let userAnswers = {};
-        let timerInterval;
-        let timeLeft = 3 * 60 * 60; // 3 hours in seconds
+  <!-- EMPLOYEE REPORT -->
+  <div id="empreport" class="section">
+    <div class="row mb-4 align-items-end">
+      <div class="col-md-4">
+        <select id="empSelect" class="form-select"><option value="">-- Select Employee --</option></select>
+      </div>
+      <div class="col-auto">
+        <button id="downloadEmpBtn" class="btn btn-success">Download CSV</button>
+      </div>
+    </div>
+    <div id="empReport"></div>
+    <div id="chartContainer" class="mt-4" style="display:none"><canvas id="statusChart"></canvas></div>
+  </div>
 
-        // Initialize the test
-        document.addEventListener('DOMContentLoaded', function() {
-            renderTest();
-            startTimer();
-            
-            // Add event listeners
-            document.getElementById('submit-btn').addEventListener('click', submitTest);
-            document.getElementById('reset-btn').addEventListener('click', resetTest);
-        });
+  <!-- REPORT -->
+  <div id="report" class="section">
+    <div class="row mb-4 align-items-end">
+      <div class="col-md-3"><select id="reportEmpSelect" class="form-select"><option value="">-- All Employees --</option></select></div>
+      <div class="col-md-2"><select id="yearSelect" class="form-select"><option value="">All Years</option></select></div>
+      <div class="col-md-2">
+        <select id="monthSelect" class="form-select">
+          <option value="">All Months</option>
+          <option value="01">Jan</option><option value="02">Feb</option><option value="03">Mar</option>
+          <option value="04">Apr</option><option value="05">May</option><option value="06">Jun</option>
+          <option value="07">Jul</option><option value="08">Aug</option><option value="09">Sep</option>
+          <option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option>
+        </select>
+      </div>
+      <div class="col-auto">
+        <button id="viewReportBtn" class="btn btn-primary">View</button>
+        <button id="downloadReportBtn" class="btn btn-success">Download</button>
+      </div>
+    </div>
+    <div id="reportTableContainer"></div>
+  </div>
 
-        // Render the test
-        function renderTest() {
-            const testContainer = document.getElementById('test-container');
-            testContainer.innerHTML = '';
-            
-            let questionNumber = 1;
-            
-            testData.forEach((section, sectionIndex) => {
-                const sectionElement = document.createElement('div');
-                sectionElement.className = 'section';
-                
-                const sectionHeader = document.createElement('div');
-                sectionHeader.className = 'section-header';
-                
-                const sectionTitle = document.createElement('div');
-                sectionTitle.className = 'section-title';
-                sectionTitle.textContent = section.title;
-                
-                const sectionScore = document.createElement('div');
-                sectionScore.className = 'section-score';
-                sectionScore.id = `section-${sectionIndex}-score`;
-                sectionScore.textContent = 'Score: 0/' + section.questions.length;
-                
-                sectionHeader.appendChild(sectionTitle);
-                sectionHeader.appendChild(sectionScore);
-                sectionElement.appendChild(sectionHeader);
-                
-                section.questions.forEach((question, questionIndex) => {
-                    const questionElement = document.createElement('div');
-                    questionElement.className = 'question';
-                    
-                    const questionText = document.createElement('div');
-                    questionText.className = 'question-text';
-                    questionText.textContent = `${questionNumber}. ${question}`;
-                    
-                    const optionsContainer = document.createElement('div');
-                    optionsContainer.className = 'options';
-                    
-                    section.options[questionIndex].forEach((option, optionIndex) => {
-                        const optionElement = document.createElement('div');
-                        optionElement.className = 'option';
-                        optionElement.textContent = option;
-                        optionElement.dataset.question = questionNumber;
-                        optionElement.dataset.option = String.fromCharCode(65 + optionIndex); // A, B, C, D
-                        
-                        optionElement.addEventListener('click', function() {
-                            selectOption(this);
-                        });
-                        
-                        optionsContainer.appendChild(optionElement);
-                    });
-                    
-                    const feedbackElement = document.createElement('div');
-                    feedbackElement.className = 'feedback';
-                    feedbackElement.id = `feedback-${questionNumber}`;
-                    
-                    questionElement.appendChild(questionText);
-                    questionElement.appendChild(optionsContainer);
-                    questionElement.appendChild(feedbackElement);
-                    
-                    sectionElement.appendChild(questionElement);
-                    questionNumber++;
-                });
-                
-                testContainer.appendChild(sectionElement);
-            });
+  <!-- ANALYTICS -->
+  <div id="analytics" class="section">
+    <div class="d-flex justify-content-between align-items-center mb-3 no-print">
+      <h5>All Employees - Monthly Summary</h5>
+      <div>
+        <input type="text" id="analyticsSearch" class="form-control form-control-sm d-inline-block w-auto me-2" placeholder="Search...">
+        <button id="excelAnalyticsBtn" class="btn btn-success btn-sm">Excel</button>
+        <button id="downloadAnalyticsBtn" class="btn btn-info btn-sm text-white">CSV</button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-sm table-bordered" id="analyticsTable">
+        <thead class="table-light">
+          <tr><th>Name</th><th>Scale</th><th>Designation</th><th>Month</th><th>Present</th><th>On-Time</th><th>Late</th><th>Absent</th><th>Casual</th><th>Earned</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="admin" class="section">
+    <div class="card mb-4">
+      <div class="card-header bg-dark text-white"><h5>Add Employee</h5></div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-4"><input type="text" id="newName" class="form-control" placeholder="Name"></div>
+          <div class="col-md-2"><input type="number" id="newScale" class="form-control" placeholder="Scale"></div>
+          <div class="col-md-4"><input type="text" id="newDesig" class="form-control" placeholder="Designation"></div>
+          <div class="col-md-2"><button id="addEmpBtn" class="btn btn-success w-100">Add</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header bg-dark text-white"><h5>Employee List</h5></div>
+      <div class="card-body p-0">
+        <div id="empList" style="max-height:400px;overflow:auto"></div>
+      </div>
+    </div>
+    <div class="card mt-4">
+      <div class="card-header bg-dark text-white"><h5>Restore Backup</h5></div>
+      <div class="card-body">
+        <input type="file" id="restoreFile" accept=".csv" class="form-control mb-2">
+        <button id="restoreBtn" class="btn btn-warning">Restore</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">Developed by <a href="#" target="_blank">Syed Rafiq ul Hoda</a> © 2025</div>
+
+<!-- MODALS -->
+<div class="modal fade" id="prevModal" tabindex="-1">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Preview – <span id="prevTitle"></span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="table-responsive" style="max-height:60vh">
+          <table class="table table-sm table-bordered m-0" id="previewTable">
+            <thead class="table-light sticky-top"></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="dlDateBtn" class="btn btn-success">Download</button>
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="clearModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">Confirm Clear All Data</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>All attendance, leave, and late records will be permanently deleted.</strong></p>
+        <input type="password" id="clearPass" class="form-control" placeholder="Enter password to confirm">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button id="confirmClearBtn" class="btn btn-danger">Clear All</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// === DISABLE RIGHT CLICK & F12 ===
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+  if (e.key === 'F12' || (e.ctrlKey && ['u','s','a','c'].includes(e.key))) e.preventDefault();
+});
+// === DATA ===
+let employees = JSON.parse(localStorage.getItem('employees')) || [
+  {name:"Mr. Safi Ahmad Zakai", scale:20, designation:"Controller of Examination"},
+  {name:"Mr. Syed Rafiq Ul Hoda", scale:19, designation:"Controller of Examination"},
+  {name:"Ms. Bushra Munir", scale:19, designation:"I.T. Manager (Sr. Scale)"},
+  {name:"Mr. Naushad Ahmed", scale:19, designation:"Deputy Controller of Exam."},
+  {name:"Mr. Zafar Ali Khan", scale:19, designation:"I.T. Manager (Sr. Scale)"},
+  {name:"Mr. Faraz Yar Khan", scale:18, designation:"Deputy Controller of Exam."},
+  {name:"Ms. Oufaq Iqbal", scale:18, designation:"I.T. Manager (Sr. Scale)"},
+  {name:"Ms. Hira Javvad", scale:18, designation:"I.T. Manager (Jr. Scale)"},
+  {name:"Mr. S. M. Kashif", scale:17, designation:"I.T. Manager (Jr. Scale)"},
+  {name:"Mr. Syed Muhammad Zubair", scale:17, designation:"Assistant Controller of Exam."},
+  {name:"Mr. Irfan Ali Shah", scale:17, designation:"Assistant Controller of Exam."},
+  {name:"Mr. Aliyan Bin Saleem", scale:16, designation:"Data Entry Operator"},
+  {name:"Mr. Zeeshan Ahmed", scale:16, designation:"Jr. Data Entry Operator"},
+  {name:"Mr. Fahad Zeeshan", scale:16, designation:"Jr. Data Entry Operator"},
+  {name:"Mr. Arsalan Saeed", scale:16, designation:"Jr. Data Entry Operator"},
+  {name:"Mr. Syed Ahad Ali", scale:16, designation:"Senior Data Entry Operator"},
+  {name:"Mr. Muhammad Hafeezur Rahman", scale:16, designation:"Jr. Data Entry Operator"},
+  {name:"Mr. Khurram Hafeez", scale:16, designation:"Jr. Data Entry Operator"},
+  {name:"Mr. Majeed Khan", scale:16, designation:"Jr. Data Entry Operator"},
+  {name:"Mr. Mirza Furqan Baig", scale:16, designation:"Data Entry Operator"},
+  {name:"Ms. Irfana Ambreen", scale:16, designation:"Jr. Data Entry Operator"},
+  {name:"Mr. Tariq Salahuddin", scale:16, designation:"P.A"},
+  {name:"Ms. Shazia", scale:16, designation:"Data Entry Operator"},
+  {name:"Mr. Muhammad Sohail", scale:15, designation:"Senior Computer Attendant"},
+  {name:"Mr. Naveed Shaeikh", scale:15, designation:"Senior Computer Attendant"},
+  {name:"Mr. Hafiz Ur Rahman", scale:14, designation:"Senior Computer Attendant"},
+  {name:"Mr. Razi Ahmed Abbasi", scale:12, designation:"Computer Attendant"},
+  {name:"Ms. Sumreen Sahar", scale:12, designation:"Computer Attendant"},
+  {name:"Mr. Muhammad Israr Ahmed", scale:12, designation:"Computer Attendant"},
+  {name:"Mr. Muhammad Mazher", scale:12, designation:"Computer Attendant"},
+  {name:"Mr. Anfas Ali Shah", scale:12, designation:"Computer Attendant"},
+  {name:"Mr. Tauseef Ahmed Khan", scale:12, designation:"Computer Attendant"},
+  {name:"Mr. Irfan Ali", scale:12, designation:"Record Keeper"},
+  {name:"Mr. Amanatullah", scale:12, designation:"Computer Attendant"},
+  {name:"Mr. Muhammad Irshad", scale:12, designation:"Computer Attendant"},
+  {name:"Mr. Sajid Hussain", scale:12, designation:"Computer Attendant"},
+  {name:"Mr. Saoud Hussain", scale:12, designation:"Computer Attendant"},
+  {name:"Mr. Saddam Hussain", scale:6, designation:"Machine Operator"},
+  {name:"Mr. Kamran Alam Siddiqui", scale:6, designation:"Machine Operator"},
+  {name:"Mr. Shakir Ali", scale:3, designation:"Naib Qasid"},
+  {name:"Mr. Rizwan Uz Zaman", scale:3, designation:"Naib Qasid"},
+  {name:"Mr. Rao Gee", scale:3, designation:"Naib Qasid"},
+  {name:"Mr. Muhammad Junaid Mahfooz Abbasi", scale:3, designation:"Naib Qasid"},
+  {name:"Mr. Muhammad Yousuf Khan", scale:3, designation:"Naib Qasid"},
+  {name:"Mr. Abdul Khaliq", scale:3, designation:"Lab Attendant"},
+  {name:"Mr. Karamatullah Khan", scale:3, designation:"Naib Qasid"},
+  {name:"Mr. Fayyaz Sallah Uddin", scale:3, designation:"Naib Qasid"},
+  {name:"Mr. Muhammad Aslam", scale:3, designation:"Daftari"},
+  {name:"Mr. Karam Dad", scale:3, designation:"Daftari"},
+  {name:"Mr. Aurang Zaib", scale:2, designation:"Naib Qasid"},
+  {name:"Mr. Naseem Ahmed", scale:2, designation:"Naib Qasid"}
+];
+let attendanceLog = JSON.parse(localStorage.getItem('attendanceLog')) || [];
+let currentDate = '', lotDate = '';
+let chart = null;
+let currentReportData = null;
+let reportData = [];
+
+// === HELPERS ===
+function fmt(iso) { const [y,m,d] = iso.split('-'); return `${d}-${m}-${y}`; }
+function todayISO() { return new Date().toISOString().slice(0,10); }
+function log(msg) { document.getElementById('debug').textContent = msg; }
+function setMaxDate() {
+  const today = todayISO();
+  ['attDate', 'lotDate', 'dashDate'].forEach(id => {
+    const el = document.getElementById(id);
+    el.max = today;
+    if (el.value > today) el.value = today;
+  });
+}
+function saveEmployees() { localStorage.setItem('employees', JSON.stringify(employees)); }
+
+// === LOGIN ===
+document.getElementById('loginBtn').onclick = login;
+document.getElementById('password').addEventListener('keypress', e => { if (e.key === 'Enter') login(); });
+function login() {
+  const u = document.getElementById('username').value.trim();
+  const p = document.getElementById('password').value;
+  if (u === 'admin' && p === 'admin123') {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.body.classList.add('logged-in');
+    initApp();
+    log('Logged in.');
+  } else alert('Invalid credentials.');
+}
+document.getElementById('logoutBtn').onclick = () => {
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'block';
+  document.body.classList.remove('logged-in');
+};
+
+// === INIT ===
+function initApp() {
+  const today = todayISO();
+  setMaxDate();
+
+  const savedAttDate = localStorage.getItem('attDate') || today;
+  const savedLotDate = localStorage.getItem('lotDate') || today;
+  const savedDashDate = localStorage.getItem('dashDate') || today;
+
+  document.getElementById('attDate').value = savedAttDate;
+  document.getElementById('lotDate').value = savedLotDate;
+  document.getElementById('dashDate').value = savedDashDate;
+
+  currentDate = savedAttDate;
+  lotDate = savedLotDate;
+
+  buildTable();
+  buildLotTable();
+  updateAttPreview();
+  updateLotPreview();
+  fillEmployeeDropdowns();
+  updateDashboard();
+  updateAnalytics();
+  updateEmployeeList();
+  fillYearFilter();
+
+  document.getElementById('attDate').onchange = () => { currentDate = document.getElementById('attDate').value; localStorage.setItem('attDate', currentDate); buildTable(); updateAttPreview(); };
+  document.getElementById('lotDate').onchange = () => { lotDate = document.getElementById('lotDate').value; localStorage.setItem('lotDate', lotDate); buildLotTable(); updateLotPreview(); };
+  document.getElementById('dashDate').onchange = () => { localStorage.setItem('dashDate', document.getElementById('dashDate').value); updateDashboard(); };
+
+  document.getElementById('todayBtn').onclick = () => setToday('attDate');
+  document.getElementById('refreshBtn').onclick = () => refreshTab('attendance');
+  document.getElementById('lotTodayBtn').onclick = () => setToday('lotDate');
+  document.getElementById('lotRefreshBtn').onclick = () => refreshTab('lateontime');
+  document.getElementById('dashTodayBtn').onclick = () => setToday('dashDate');
+  document.getElementById('saveBtn').onclick = saveAll;
+  document.getElementById('lotSaveBtn').onclick = saveLotAttendance;
+  document.getElementById('previewBtn').onclick = showPreviewModal;
+  document.getElementById('downloadBtn').onclick = downloadFullCSV;
+  document.getElementById('dashDownloadBtn').onclick = downloadDashboardDate;
+  document.getElementById('viewReportBtn').onclick = generateReport;
+  document.getElementById('clearAllBtn').onclick = () => new bootstrap.Modal(document.getElementById('clearModal')).show();
+  document.getElementById('analyticsSearch').onkeyup = filterAnalytics;
+  document.getElementById('excelAnalyticsBtn').onclick = exportToExcel;
+  document.getElementById('downloadAnalyticsBtn').onclick = downloadAnalyticsCSV;
+  document.getElementById('downloadEmpBtn').onclick = downloadEmployeeReport;
+  document.getElementById('downloadReportBtn').onclick = downloadReportCSV;
+  document.getElementById('addEmpBtn').onclick = addEmployee;
+  document.getElementById('restoreBtn').onclick = restoreBackup;
+}
+
+function setToday(id) {
+  const today = todayISO();
+  document.getElementById(id).value = today;
+  localStorage.setItem(id, today);
+  if (id === 'attDate') { currentDate = today; buildTable(); updateAttPreview(); }
+  if (id === 'lotDate') { lotDate = today; buildLotTable(); updateLotPreview(); }
+  if (id === 'dashDate') updateDashboard();
+}
+
+function refreshTab(tab) {
+  const today = todayISO();
+  if (tab === 'attendance') {
+    document.getElementById('attDate').value = today;
+    currentDate = today;
+    localStorage.setItem('attDate', today);
+    buildTable(); updateAttPreview();
+  }
+  if (tab === 'lateontime') {
+    document.getElementById('lotDate').value = today;
+    lotDate = today;
+    localStorage.setItem('lotDate', today);
+    buildLotTable(); updateLotPreview();
+  }
+}
+
+// === CLEAR ALL ===
+document.getElementById('confirmClearBtn').onclick = () => {
+  if (document.getElementById('clearPass').value === 'admin123') {
+    localStorage.removeItem('attendanceLog');
+    attendanceLog = [];
+    updateAll();
+    buildTable(); buildLotTable();
+    bootstrap.Modal.getInstance(document.getElementById('clearModal')).hide();
+    log('All data cleared permanently.');
+  } else alert('Wrong password');
+};
+
+// === SAVE ALL ===
+function saveAll() { saveAttendance(); saveLotAttendance(); alert('All saved!'); }
+
+// === SAVE ATTENDANCE ===
+function saveAttendance() {
+  const date = document.getElementById('attDate').value;
+  if (!date) return alert('Select date');
+  currentDate = date;
+  localStorage.setItem('attDate', date);
+  attendanceLog = attendanceLog.filter(x => x.date !== date);
+  document.querySelectorAll('#attTable tr').forEach(tr => {
+    const name = tr.cells[1].textContent;
+    const emp = employees.find(e => e.name === name);
+    const attStatus = tr.querySelector('select').value;
+    attendanceLog.push({ date, name, scale: emp.scale, designation: emp.designation, attStatus, lateStatus: '' });
+  });
+  localStorage.setItem('attendanceLog', JSON.stringify(attendanceLog));
+  updateAll();
+}
+
+// === SAVE LATE/ON-TIME ===
+function saveLotAttendance() {
+  const date = document.getElementById('lotDate').value;
+  if (!date) return alert('Select date');
+  lotDate = date;
+  localStorage.setItem('lotDate', date);
+  document.querySelectorAll('#lotTable tr').forEach(tr => {
+    const name = tr.cells[1].textContent;
+    const select = tr.querySelector('select');
+    if (!select.disabled && select.value) {
+      const lateStatus = select.value;
+      const rec = attendanceLog.find(x => x.date === date && x.name === name);
+      if (rec) rec.lateStatus = lateStatus;
+    }
+  });
+  localStorage.setItem('attendanceLog', JSON.stringify(attendanceLog));
+  updateAll();
+  alert('Late/On-Time updated!');
+}
+
+// === TABLES ===
+function getStatusClass(s) {
+  if (!s) return '';
+  return s === 'Present' ? 'status-present' :
+         s === 'Late' ? 'status-late' :
+         s === 'On-Time' ? 'status-ontime' :
+         s === 'Absent' ? 'status-absent' :
+         s === 'Casual Leave' ? 'status-casual' : 'status-earned';
+}
+
+function buildTable() {
+  const tbody = document.getElementById('attTable');
+  tbody.innerHTML = '';
+  employees.forEach((e, i) => {
+    const rec = attendanceLog.find(x => x.date === currentDate && x.name === e.name) || { attStatus: 'Present' };
+    const tr = document.createElement('tr');
+    tr.className = getStatusClass(rec.attStatus);
+    tr.innerHTML = `
+      <td>${i+1}</td><td>${e.name}</td><td>${e.scale}</td><td>${e.designation}</td>
+      <td><select class="form-select form-select-sm status-select" onchange="updateRowColor(this)">
+        <option value="Present" ${rec.attStatus==='Present'?'selected':''}>Present</option>
+        <option value="Absent" ${rec.attStatus==='Absent'?'selected':''}>Absent</option>
+        <option value="Casual Leave" ${rec.attStatus==='Casual Leave'?'selected':''}>Casual Leave</option>
+        <option value="Earned Leave" ${rec.attStatus==='Earned Leave'?'selected':''}>Earned Leave</option>
+      </select></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function buildLotTable() {
+  const tbody = document.getElementById('lotTable');
+  tbody.innerHTML = '';
+  employees.forEach((e, i) => {
+    const rec = attendanceLog.find(x => x.date === lotDate && x.name === e.name) || { attStatus: 'Present', lateStatus: '' };
+    const isLeave = ['Absent','Casual Leave','Earned Leave'].includes(rec.attStatus);
+    const status = isLeave ? '' : (rec.lateStatus || 'On-Time');
+    const disabled = isLeave ? 'disabled' : '';
+    const tr = document.createElement('tr');
+    tr.className = isLeave ? getStatusClass(rec.attStatus) : getStatusClass(status);
+    tr.innerHTML = `
+      <td>${i+1}</td><td>${e.name}</td><td>${e.scale}</td><td>${e.designation}</td>
+      <td>
+        <select class="form-select form-select-sm status-select" ${disabled} onchange="updateRowColor(this)">
+          <option value="">--</option>
+          <option value="On-Time" ${status==='On-Time'?'selected':''}>On-Time</option>
+          <option value="Late" ${status==='Late'?'selected':''}>Late</option>
+        </select>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function updateRowColor(select) {
+  const tr = select.closest('tr');
+  const status = select.value || (tr.cells[4].textContent.trim() === '--' ? tr.cells[4].closest('tr').cells[4].querySelector('select').closest('tr').cells[4].textContent.trim() : '');
+  tr.className = getStatusClass(status);
+}
+
+// === PREVIEW ===
+function updateAttPreview() {
+  const data = attendanceLog.filter(x => x.date === currentDate);
+  const counts = {P:0, A:0, C:0, E:0};
+  employees.forEach(emp => {
+    const rec = data.find(d => d.name === emp.name);
+    const status = rec ? rec.attStatus : 'Present';
+    if (status === 'Present') counts.P++;
+    else if (status === 'Absent') counts.A++;
+    else if (status === 'Casual Leave') counts.C++;
+    else if (status === 'Earned Leave') counts.E++;
+  });
+  const container = document.getElementById('attPreview');
+  container.innerHTML = `
+    <div class="col"><div class="preview-card bg-success text-white text-center"><h5>${counts.P}</h5><small>Present</small></div></div>
+    <div class="col"><div class="preview-card bg-warning text-dark text-center"><h5>${counts.C}</h5><small>Casual</small></div></div>
+    <div class="col"><div class="preview-card bg-danger text-white text-center"><h5>${counts.A}</h5><small>Absent</small></div></div>
+    <div class="col"><div class="preview-card text-white text-center" style="background:#d63384"><h5>${counts.E}</h5><small>Earned</small></div></div>
+  `;
+}
+
+function updateLotPreview() {
+  const data = attendanceLog.filter(x => x.date === lotDate);
+  const counts = {OT:0, L:0};
+  employees.forEach(emp => {
+    const rec = data.find(d => d.name === emp.name);
+    if (rec && !['Absent','Casual Leave','Earned Leave'].includes(rec.attStatus)) {
+      if (rec.lateStatus === 'On-Time') counts.OT++;
+      else if (rec.lateStatus === 'Late') counts.L++;
+    }
+  });
+  const container = document.getElementById('lotPreview');
+  container.innerHTML = `
+    <div class="col"><div class="preview-card bg-info text-white text-center"><h5>${counts.OT}</h5><small>On-Time</small></div></div>
+    <div class="col"><div class="preview-card bg-primary text-white text-center"><h5>${counts.L}</h5><small>Late</small></div></div>
+  `;
+}
+
+// === TABS ===
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  document.getElementById(t.dataset.tab).classList.add('active');
+  if (t.dataset.tab === 'dashboard') updateDashboard();
+  if (t.dataset.tab === 'analytics') updateAnalytics();
+  if (t.dataset.tab === 'admin') updateEmployeeList();
+  if (t.dataset.tab === 'report') { fillEmployeeDropdowns(); fillYearFilter(); }
+  if (t.dataset.tab === 'empreport') fillEmployeeDropdowns();
+  if (t.dataset.tab === 'lateontime') { buildLotTable(); updateLotPreview(); }
+  if (t.dataset.tab === 'attendance') { buildTable(); updateAttPreview(); }
+});
+
+// === UPDATE ALL ===
+function updateAll() {
+  updateDashboard();
+  updateAnalytics();
+  updateAttPreview();
+  updateLotPreview();
+  fillYearFilter();
+}
+
+// === DASHBOARD ===
+function updateDashboard() {
+  const date = document.getElementById('dashDate').value || todayISO();
+  localStorage.setItem('dashDate', date);
+  const data = attendanceLog.filter(x => x.date === date);
+  const counts = {P:0, OT:0, L:0, A:0, C:0, E:0};
+  const lists = {P:[], OT:[], L:[], A:[], C:[], E:[]};
+
+  employees.forEach(emp => {
+    const rec = data.find(d => d.name === emp.name) || { attStatus: 'Absent', lateStatus: '' };
+    const att = rec.attStatus;
+    const late = rec.lateStatus;
+
+    if (att === 'Present') {
+      counts.P++;
+      if (late === 'On-Time') { counts.OT++; lists.OT.push(emp.name); }
+      else if (late === 'Late') { counts.L++; lists.L.push(emp.name); }
+      lists.P.push(emp.name);
+    } else if (att === 'Absent') { counts.A++; lists.A.push(emp.name); }
+    else if (att === 'Casual Leave') { counts.C++; lists.C.push(emp.name); }
+    else if (att === 'Earned Leave') { counts.E++; lists.E.push(emp.name); }
+  });
+
+  document.getElementById('pCount').textContent = counts.P;
+  document.getElementById('otCount').textContent = counts.OT;
+  document.getElementById('lCount').textContent = counts.L;
+  document.getElementById('aCount').textContent = counts.A;
+  document.getElementById('cCount').textContent = counts.C;
+  document.getElementById('eCount').textContent = counts.E;
+
+  const listHTML = (arr) => arr.length ? arr.map(n => `<li class="list-group-item">${n}</li>`).join('') : '<li class="list-group-item text-muted text-center">— None —</li>';
+  document.getElementById('pList').innerHTML = listHTML(lists.P);
+  document.getElementById('cList').innerHTML = listHTML(lists.C);
+  document.getElementById('lateList').innerHTML = listHTML(lists.L);
+  document.getElementById('aList').innerHTML = listHTML(lists.A);
+  document.getElementById('eList').innerHTML = listHTML(lists.E);
+}
+
+// === CSV DOWNLOADS ===
+function downloadCSV(csv, name) {
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = name;
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function downloadFullCSV() {
+  let csv = `Date,Name,Scale,Designation,Attendance Status,Late Status\n`;
+  attendanceLog.forEach(r => {
+    csv += `"${fmt(r.date)}","${r.name}","${r.scale}","${r.designation}","${r.attStatus}","${r.lateStatus}"\n`;
+  });
+  downloadCSV(csv, `Full_Backup_${todayISO()}.csv`);
+}
+
+function downloadDashboardDate() {
+  const date = document.getElementById('dashDate').value;
+  if (!date) return alert('Select date');
+  const data = attendanceLog.filter(x => x.date === date);
+  let csv = `Date,Name,Scale,Designation,Attendance Status,Late Status\n`;
+  data.forEach(r => {
+    csv += `"${fmt(r.date)}","${r.name}","${r.scale}","${r.designation}","${r.attStatus}","${r.lateStatus}"\n`;
+  });
+  downloadCSV(csv, `Attendance_${date}.csv`);
+}
+
+// === RESTORE BACKUP ===
+function restoreBackup() {
+  const file = document.getElementById('restoreFile').files[0];
+  if (!file) return alert('Select file');
+  const reader = new FileReader();
+  reader.onload = e => {
+    const lines = e.target.result.trim().split('\n').slice(1);
+    const restored = [];
+    lines.forEach(line => {
+      const parts = line.replace(/"/g,'').split(',');
+      if (parts.length >= 6) {
+        const [date, name, scale, desig, attStatus, lateStatus] = parts;
+        if (date && name && attStatus) {
+          restored.push({ date, name, scale: parseInt(scale), designation: desig, attStatus, lateStatus });
         }
+      }
+    });
+    attendanceLog = restored;
+    localStorage.setItem('attendanceLog', JSON.stringify(attendanceLog));
+    updateAll();
+    alert('Backup restored!');
+  };
+  reader.readAsText(file);
+}
 
-        // Select an option
-        function selectOption(optionElement) {
-            const questionNumber = optionElement.dataset.question;
-            const selectedOption = optionElement.dataset.option;
-            
-            // Remove selected class from all options in this question
-            const options = document.querySelectorAll(`.option[data-question="${questionNumber}"]`);
-            options.forEach(opt => {
-                opt.classList.remove('selected');
-            });
-            
-            // Add selected class to clicked option
-            optionElement.classList.add('selected');
-            
-            // Store user's answer
-            userAnswers[questionNumber] = selectedOption;
-            
-            // Hide any previous feedback
-            const feedbackElement = document.getElementById(`feedback-${questionNumber}`);
-            feedbackElement.className = 'feedback';
-            feedbackElement.style.display = 'none';
-        }
+// === EMPLOYEE REPORT ===
+function fillEmployeeDropdowns() {
+  ['empSelect', 'reportEmpSelect'].forEach(id => {
+    const sel = document.getElementById(id);
+    sel.innerHTML = id === 'empSelect' ? '<option value="">-- Select Employee --</option>' : '<option value="">-- All Employees --</option>';
+    employees.forEach(e => {
+      const opt = document.createElement('option');
+      opt.value = e.name;
+      opt.textContent = e.name;
+      sel.appendChild(opt);
+    });
+  });
+  document.getElementById('empSelect').onchange = viewEmployeeReport;
+}
 
-        // Start the timer
-        function startTimer() {
-            updateTimerDisplay();
-            
-            timerInterval = setInterval(function() {
-                timeLeft--;
-                updateTimerDisplay();
-                
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    submitTest();
-                    alert("Time's up! Your test has been submitted automatically.");
-                }
-            }, 1000);
-        }
+function viewEmployeeReport() {
+  const name = document.getElementById('empSelect').value;
+  if (!name) {
+    document.getElementById('empReport').innerHTML = '';
+    document.getElementById('chartContainer').style.display = 'none';
+    return;
+  }
+  const hist = attendanceLog.filter(x => x.name === name).sort((a,b) => a.date.localeCompare(b.date));
+  let p=0, ot=0, l=0, a=0, c=0, e=0;
+  hist.forEach(h => {
+    if (h.attStatus === 'Present' && h.lateStatus === 'On-Time') ot++;
+    else if (h.attStatus === 'Present' && h.lateStatus === 'Late') l++;
+    else if (h.attStatus === 'Present') p++;
+    else if (h.attStatus === 'Absent') a++;
+    else if (h.attStatus === 'Casual Leave') c++;
+    else if (h.attStatus === 'Earned Leave') e++;
+  });
+  p += ot + l;
+  currentReportData = { hist, p, ot, l, a, c, e, name };
+  const report = `<div class="card"><div class="card-header bg-primary text-white"><h5>${name} - History</h5></div><div class="card-body">
+    <div class="row text-center mb-3 g-2">
+      <div class="col"><span class="badge badge-present fs-5 p-2">${p} Present</span></div>
+      <div class="col"><span class="badge bg-info text-white fs-5 p-2">${ot} On-Time</span></div>
+      <div class="col"><span class="badge bg-primary fs-5 p-2">${l} Late</span></div>
+      <div class="col"><span class="badge badge-absent fs-5 p-2">${a} Absent</span></div>
+      <div class="col"><span class="badge badge-casual fs-5 p-2">${c} Casual</span></div>
+      <div class="col"><span class="badge badge-earned fs-5 p-2">${e} Earned</span></div>
+    </div>
+    <h6>History</h6><div style="max-height:400px;overflow:auto;">${hist.map(h=>`<div><small class="text-muted">${fmt(h.date)}</small> <strong class="badge ${getBadgeClass(h.lateStatus)}">${h.attStatus} (${h.lateStatus||'--'})</strong></div>`).join('')||'<em>No records</em>'}</div></div></div>`;
+  document.getElementById('empReport').innerHTML = report;
+  document.getElementById('chartContainer').style.display = 'block';
+  const ctx = document.getElementById('statusChart').getContext('2d');
+  if (chart) chart.destroy();
+  chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Present', 'On-Time', 'Late', 'Absent', 'Casual', 'Earned'],
+      datasets: [{ label: 'Count', data: [p, ot, l, a, c, e], backgroundColor: ['#28a745', '#17a2b8', '#007bff', '#dc3545', '#ffc107', '#d63384'], borderWidth: 1 }]
+    },
+    options: { responsive: true, plugins: { legend: { display: false } } }
+  });
+}
 
-        // Update timer display
-        function updateTimerDisplay() {
-            const hours = Math.floor(timeLeft / 3600);
-            const minutes = Math.floor((timeLeft % 3600) / 60);
-            const seconds = timeLeft % 60;
-            
-            const timerElement = document.getElementById('timer');
-            timerElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            
-            // Change color when time is running low
-            if (timeLeft < 300) { // 5 minutes
-                timerElement.style.color = '#e74c3c';
-            } else if (timeLeft < 900) { // 15 minutes
-                timerElement.style.color = '#f39c12';
-            }
-        }
+function downloadEmployeeReport() {
+  if (!currentReportData) return alert('Select employee');
+  const { hist, name } = currentReportData;
+  let csv = `Date,Name,Scale,Designation,Attendance Status,Late Status\n`;
+  hist.forEach(r => csv += `"${fmt(r.date)}","${r.name}","${r.scale}","${r.designation}","${r.attStatus}","${r.lateStatus}"\n`);
+  downloadCSV(csv, `${name.replace(/ /g,'_')}_Report.csv`);
+}
 
-        // Submit the test
-        function submitTest() {
-            clearInterval(timerInterval);
-            
-            let totalScore = 0;
-            let sectionScores = [0, 0, 0, 0, 0];
-            let sectionTotals = [81, 45, 36, 9, 9];
-            
-            // Calculate scores
-            for (let questionNumber in userAnswers) {
-                const userAnswer = userAnswers[questionNumber];
-                const correctAnswer = answerKey[questionNumber];
-                
-                if (userAnswer === correctAnswer) {
-                    totalScore++;
-                    
-                    // Determine which section this question belongs to
-                    let qNum = parseInt(questionNumber);
-                    if (qNum <= 81) {
-                        sectionScores[0]++;
-                    } else if (qNum <= 126) {
-                        sectionScores[1]++;
-                    } else if (qNum <= 162) {
-                        sectionScores[2]++;
-                    } else if (qNum <= 171) {
-                        sectionScores[3]++;
-                    } else {
-                        sectionScores[4]++;
-                    }
-                }
-                
-                // Show feedback for each question
-                const options = document.querySelectorAll(`.option[data-question="${questionNumber}"]`);
-                const feedbackElement = document.getElementById(`feedback-${questionNumber}`);
-                
-                options.forEach(opt => {
-                    if (opt.dataset.option === correctAnswer) {
-                        opt.classList.add('correct');
-                    } else if (opt.dataset.option === userAnswer && userAnswer !== correctAnswer) {
-                        opt.classList.add('incorrect');
-                    }
-                });
-                
-                if (userAnswer === correctAnswer) {
-                    feedbackElement.textContent = "Correct!";
-                    feedbackElement.className = 'feedback correct';
-                } else {
-                    feedbackElement.textContent = `Incorrect. The correct answer is ${correctAnswer}.`;
-                    feedbackElement.className = 'feedback incorrect';
-                }
-            }
-            
-            // Update section scores
-            for (let i = 0; i < sectionScores.length; i++) {
-                document.getElementById(`section-${i}-score`).textContent = 
-                    `Score: ${sectionScores[i]}/${sectionTotals[i]}`;
-            }
-            
-            // Show results
-            showResults(totalScore, sectionScores, sectionTotals);
-            
-            // Scroll to results
-            document.getElementById('results-container').scrollIntoView({ behavior: 'smooth' });
-        }
+// === REPORT ===
+function generateReport() {
+  const emp = document.getElementById('reportEmpSelect').value;
+  const year = document.getElementById('yearSelect').value;
+  const month = document.getElementById('monthSelect').value;
+  let filtered = attendanceLog;
+  if (emp) filtered = filtered.filter(x => x.name === emp);
+  if (year) filtered = filtered.filter(x => x.date.startsWith(year));
+  if (month) filtered = filtered.filter(x => x.date.startsWith(`${year}-${month}`));
+  const summary = {};
+  filtered.forEach(e => {
+    const key = e.name;
+    if (!summary[key]) summary[key] = {P:0,OT:0,L:0,A:0,C:0,E:0};
+    if (e.attStatus === 'Present' && e.lateStatus === 'On-Time') summary[key].OT++;
+    else if (e.attStatus === 'Present' && e.lateStatus === 'Late') summary[key].L++;
+    else if (e.attStatus === 'Present') summary[key].P++;
+    else if (e.attStatus === 'Absent') summary[key].A++;
+    else if (e.attStatus === 'Casual Leave') summary[key].C++;
+    else if (e.attStatus === 'Earned Leave') summary[key].E++;
+  });
+  reportData = (emp ? [employees.find(x=>x.name===emp)] : employees).map(emp => {
+    const s = summary[emp.name] || {P:0,OT:0,L:0,A:0,C:0,E:0};
+    s.P += s.OT + s.L;
+    return { ...emp, ...s };
+  });
+  const container = document.getElementById('reportTableContainer');
+  container.innerHTML = `
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <h5>Summary - ${emp||'All'} ${year||''} ${month?getMonthName(month):''}</h5>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-sm table-bordered mb-0">
+            <thead class="table-light">
+              <tr><th>Name</th><th>Scale</th><th>Designation</th><th>Present</th><th>On-Time</th><th>Late</th><th>Absent</th><th>Casual</th><th>Earned</th></tr>
+            </thead>
+            <tbody>
+              ${reportData.map(r => `
+                <tr>
+                  <td>${r.name}</td>
+                  <td>${r.scale}</td>
+                  <td>${r.designation}</td>
+                  <td><span class="badge badge-present">${r.P}</span></td>
+                  <td><span class="badge bg-info text-white">${r.OT}</span></td>
+                  <td><span class="badge bg-primary">${r.L}</span></td>
+                  <td><span class="badge badge-absent">${r.A}</span></td>
+                  <td><span class="badge badge-casual">${r.C}</span></td>
+                  <td><span class="badge badge-earned">${r.E}</span></td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+}
 
-        // Show results
-        function showResults(totalScore, sectionScores, sectionTotals) {
-            const resultsContainer = document.getElementById('results-container');
-            const scoreSummary = document.getElementById('score-summary');
-            const totalScoreValue = document.getElementById('total-score-value');
-            
-            // Clear previous results
-            scoreSummary.innerHTML = '';
-            
-            // Add section score cards
-            const sectionTitles = ["Biology", "Chemistry", "Physics", "English", "Logical Reasoning"];
-            
-            sectionTitles.forEach((title, index) => {
-                const scoreCard = document.createElement('div');
-                scoreCard.className = 'score-card';
-                
-                const titleElement = document.createElement('h3');
-                titleElement.textContent = title;
-                
-                const scoreElement = document.createElement('div');
-                scoreElement.className = 'score-value';
-                scoreElement.textContent = `${sectionScores[index]}/${sectionTotals[index]}`;
-                
-                scoreCard.appendChild(titleElement);
-                scoreCard.appendChild(scoreElement);
-                scoreSummary.appendChild(scoreCard);
-            });
-            
-            // Set total score
-            totalScoreValue.textContent = `${totalScore}/180`;
-            
-            // Show results container
-            resultsContainer.style.display = 'block';
-        }
+function getMonthName(m) {
+  const names = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return names[parseInt(m)];
+}
 
-        // Reset the test
-        function resetTest() {
-            if (confirm("Are you sure you want to reset the test? All your answers will be lost.")) {
-                clearInterval(timerInterval);
-                userAnswers = {};
-                timeLeft = 3 * 60 * 60;
-                
-                // Reset section scores
-                for (let i = 0; i < 5; i++) {
-                    document.getElementById(`section-${i}-score`).textContent = 
-                        `Score: 0/${testData[i].questions.length}`;
-                }
-                
-                // Hide results
-                document.getElementById('results-container').style.display = 'none';
-                
-                // Re-render test
-                renderTest();
-                
-                // Restart timer
-                startTimer();
-                
-                // Scroll to top
-                window.scrollTo(0, 0);
-            }
-        }
-    </script>
+function downloadReportCSV() {
+  if (!reportData.length) return alert('Generate report');
+  let csv = `Name,Scale,Designation,Present,On-Time,Late,Absent,Casual,Earned\n`;
+  reportData.forEach(r => csv += `"${r.name}","${r.scale}","${r.designation}","${r.P}","${r.OT}","${r.L}","${r.A}","${r.C}","${r.E}"\n`);
+  downloadCSV(csv, `Report_${todayISO()}.csv`);
+}
+
+// === ANALYTICS ===
+function fillYearFilter() {
+  const years = new Set(attendanceLog.map(x => x.date.substring(0,4)));
+  const sel = document.getElementById('yearSelect');
+  sel.innerHTML = '<option value="">All Years</option>';
+  [...years].sort().reverse().forEach(y => {
+    const opt = document.createElement('option'); opt.value = y; opt.textContent = y; sel.appendChild(opt);
+  });
+}
+
+let analyticsData = [];
+function updateAnalytics() {
+  const months = new Set(attendanceLog.map(x => x.date.substring(0,7)));
+  const monthly = {};
+  employees.forEach(emp => {
+    months.forEach(m => {
+      const key = `${m}_${emp.name}`;
+      if (!monthly[key]) monthly[key] = {P:0,OT:0,L:0,A:0,C:0,E:0};
+    });
+  });
+  attendanceLog.forEach(e => {
+    const m = e.date.substring(0,7);
+    const key = `${m}_${e.name}`;
+    if (!monthly[key]) monthly[key] = {P:0,OT:0,L:0,A:0,C:0,E:0};
+    if (e.attStatus === 'Present' && e.lateStatus === 'On-Time') monthly[key].OT++;
+    else if (e.attStatus === 'Present' && e.lateStatus === 'Late') monthly[key].L++;
+    else if (e.attStatus === 'Present') monthly[key].P++;
+    else if (e.attStatus === 'Absent') monthly[key].A++;
+    else if (e.attStatus === 'Casual Leave') monthly[key].C++;
+    else if (e.attStatus === 'Earned Leave') monthly[key].E++;
+  });
+  analyticsData = [];
+  const tbody = document.getElementById('analyticsTable').querySelector('tbody');
+  tbody.innerHTML = '';
+  [...months].sort().reverse().forEach(m => {
+    employees.forEach(emp => {
+      const key = `${m}_${emp.name}`;
+      const c = monthly[key] || {P:0,OT:0,L:0,A:0,C:0,E:0};
+      c.P += c.OT + c.L;
+      const row = {name:emp.name, scale:emp.scale, designation:emp.designation, month:m.replace('-','/'), P:c.P, OT:c.OT, L:c.L, A:c.A, C:c.C, E:c.E};
+      analyticsData.push(row);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${emp.name}</td><td>${emp.scale}</td><td>${emp.designation}</td><td>${m.replace('-','/')}</td><td>${c.P}</td><td>${c.OT}</td><td>${c.L}</td><td>${c.A}</td><td>${c.C}</td><td>${c.E}</td>`;
+      tbody.appendChild(tr);
+    });
+  });
+}
+
+function filterAnalytics() {
+  const term = document.getElementById('analyticsSearch').value.toLowerCase();
+  document.querySelectorAll('#analyticsTable tbody tr').forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
+  });
+}
+
+function exportToExcel() {
+  const ws = XLSX.utils.json_to_sheet(analyticsData);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Analytics");
+  XLSX.writeFile(wb, "Monthly_Analytics.xlsx");
+}
+
+function downloadAnalyticsCSV() {
+  let csv = `Monthly Summary\nName,Scale,Designation,Month,Present,On-Time,Late,Absent,Casual,Earned\n`;
+  analyticsData.forEach(r => csv += `"${r.name}","${r.scale}","${r.designation}","${r.month}","${r.P}","${r.OT}","${r.L}","${r.A}","${r.C}","${r.E}"\n`);
+  downloadCSV(csv, `Analytics_${todayISO()}.csv`);
+}
+
+// === ADMIN ===
+function addEmployee() {
+  const name = document.getElementById('newName').value.trim();
+  const scale = document.getElementById('newScale').value;
+  const desig = document.getElementById('newDesig').value.trim();
+  if (!name || !scale || !desig) return alert('Fill all');
+  if (employees.some(e => e.name === name)) return alert('Employee exists');
+  employees.push({ name, scale: parseInt(scale), designation: desig });
+  saveEmployees();
+  buildTable(); buildLotTable(); fillEmployeeDropdowns(); updateAnalytics(); updateDashboard(); updateEmployeeList();
+  document.getElementById('newName').value = document.getElementById('newScale').value = document.getElementById('newDesig').value = '';
+}
+
+function updateEmployeeList() {
+  const container = document.getElementById('empList');
+  container.innerHTML = '';
+  employees.forEach((e, i) => {
+    const div = document.createElement('div');
+    div.className = 'p-2 border-bottom d-flex justify-content-between align-items-center';
+    div.innerHTML = `<div><strong>${e.name}</strong> <small class="text-muted">Scale ${e.scale} - ${e.designation}</small></div>
+      <div>
+        <button class="btn btn-sm btn-warning edit-btn" data-index="${i}">Edit</button>
+        <button class="btn btn-sm btn-danger delete-btn" data-index="${i}">Delete</button>
+      </div>`;
+    container.appendChild(div);
+  });
+  container.querySelectorAll('.delete-btn').forEach(btn => btn.onclick = () => {
+    if (confirm('Delete employee?')) {
+      employees.splice(btn.dataset.index, 1);
+      saveEmployees();
+      buildTable(); buildLotTable(); fillEmployeeDropdowns(); updateAnalytics(); updateDashboard(); updateEmployeeList();
+    }
+  });
+  container.querySelectorAll('.edit-btn').forEach(btn => btn.onclick = () => {
+    const idx = btn.dataset.index;
+    const emp = employees[idx];
+    const n = prompt('Name:', emp.name);
+    const s = prompt('Scale:', emp.scale);
+    const d = prompt('Designation:', emp.designation);
+    if (n && s && d) {
+      employees[idx] = {name:n, scale:parseInt(s), designation:d};
+      saveEmployees();
+      buildTable(); buildLotTable(); fillEmployeeDropdowns(); updateAnalytics(); updateDashboard(); updateEmployeeList();
+    }
+  });
+}
+
+// === PREVIEW MODAL ===
+function showPreviewModal() {
+  const date = currentDate || todayISO();
+  const data = attendanceLog.filter(x => x.date === date);
+  document.getElementById('prevTitle').textContent = fmt(date);
+  const thead = document.querySelector('#previewTable thead');
+  const tbody = document.querySelector('#previewTable tbody');
+  thead.innerHTML = '<tr><th>#</th><th>Name</th><th>Scale</th><th>Designation</th><th>Attendance Status</th><th>Late Status</th></tr>';
+  tbody.innerHTML = '';
+  data.forEach((e, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${i+1}</td><td>${e.name}</td><td>${e.scale}</td><td>${e.designation}</td><td><span class="badge ${getBadgeClass(e.attStatus)}">${e.attStatus}</span></td><td><span class="badge ${getBadgeClass(e.lateStatus)}">${e.lateStatus||'--'}</span></td>`;
+    tbody.appendChild(tr);
+  });
+  const modal = new bootstrap.Modal(document.getElementById('prevModal'));
+  modal.show();
+  document.getElementById('dlDateBtn').onclick = downloadDashboardDate;
+}
+
+// === BADGE CLASS ===
+function getBadgeClass(s) {
+  if (!s || s === '--') return 'bg-secondary';
+  return s === 'Present' ? 'badge-present' :
+         s === 'Late' ? 'badge-late' :
+         s === 'On-Time' ? 'bg-info text-white' :
+         s === 'Absent' ? 'badge-absent' :
+         s === 'Casual Leave' ? 'badge-casual' : 'badge-earned';
+}
+
+window.onload = () => {
+  setMaxDate();
+  if (document.body.classList.contains('logged-in')) initApp();
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
